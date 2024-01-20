@@ -171,11 +171,11 @@ class MiioValetudoRobot extends ValetudoRobot {
     }
 
     get deviceId() {
-        let deviceId = this.implConfig.deviceId;
-
         if (this.cachedDeviceId) {
             return this.cachedDeviceId;
         }
+
+        let deviceId = this.implConfig.deviceId;
 
         if (!deviceId && this.config.get("embedded") === true) {
             deviceId = MiioValetudoRobot.READ_DEVICE_CONF(this.deviceConfPath)["did"];
@@ -221,29 +221,31 @@ class MiioValetudoRobot extends ValetudoRobot {
     }
 
     get cloudSecret() {
-        let cloudSecret = this.implConfig.cloudSecret;
-
         if (this.cachedCloudSecret) {
             return this.cachedCloudSecret;
         }
 
+        let cloudSecret = this.implConfig.cloudSecret;
+
         if (!cloudSecret && this.config.get("embedded") === true) {
             cloudSecret = this.getCloudSecretFromFS();
+        } else {
+            Logger.trace("Parsing cloudSecret from config");
         }
 
         if (cloudSecret && cloudSecret.length >= 32) {
             // For local development, people might put in the hex representation of the token.
             // Make this work too.
             cloudSecret = Buffer.from(cloudSecret.toString().slice(0, 32), "hex");
-        }
-
-        if (cloudSecret) {
-            this.cachedCloudSecret = cloudSecret;
-
-            return cloudSecret;
+        } else if (cloudSecret && cloudSecret.length >= 16) {
+            cloudSecret = Buffer.from(cloudSecret.toString().slice(0, 16));
         } else {
-            return Buffer.from("0000000000000000"); // This doesnt work but it wont crash the system
+            Logger.debug("Invalid cloudSecret with length " + (cloudSecret && cloudSecret.length ? cloudSecret.length : 0));
+            cloudSecret = Buffer.from("0000000000000000"); // This doesnt work but it wont crash the system
         }
+
+        this.cachedCloudSecret = cloudSecret;
+        return cloudSecret;
     }
 
     setEmbeddedParameters() {
