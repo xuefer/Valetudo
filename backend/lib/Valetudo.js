@@ -72,7 +72,8 @@ class Valetudo {
 
 
         this.ntpClient = new NTPClient({
-            config: this.config
+            config: this.config,
+            robot: this.robot
         });
 
         this.robot.startup();
