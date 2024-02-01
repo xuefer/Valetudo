@@ -127,7 +127,8 @@ class LinuxTools {
         dateString += date.getSeconds().toString().padStart(2, "0");
 
 
-        execSync("date -s \""+dateString+"\"");
+        const busybox = fs.existsSync("/bin/busybox2") ? "/bin/busybox2" : "/bin/busybox";
+        execSync(busybox + " date -s \""+dateString+"\"");
     }
 }
 
