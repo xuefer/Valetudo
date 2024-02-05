@@ -60,6 +60,7 @@ CleanRouteControlCapability.ROUTE = Object.freeze({
     QUICK: "quick",
     INTENSIVE: "intensive",
     DEEP: "deep",
+    CUSTOMIZE: "customize",
 });
 
 

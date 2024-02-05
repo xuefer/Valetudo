@@ -662,7 +662,7 @@ export interface MapAnnotationsProperties {
 }
 
 
-export type CleanRoute = "quick" | "normal" | "intensive" | "deep";
+export type CleanRoute = "quick" | "normal" | "intensive" | "deep" | "customize";
 
 export interface CleanRoutePayload {
     route: CleanRoute
