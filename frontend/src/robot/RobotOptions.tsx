@@ -701,7 +701,8 @@ const CleanRouteControlCapabilitySelectListMenuItem = () => {
         "quick": 1,
         "normal": 2,
         "intensive": 3,
-        "deep": 4
+        "deep": 4,
+        "customize": 5,
     };
 
     const {
@@ -738,6 +739,9 @@ const CleanRouteControlCapabilitySelectListMenuItem = () => {
                 break;
             case "deep":
                 label = "Deep";
+                break;
+            case "customize":
+                label = "Customize";
                 break;
         }
 
