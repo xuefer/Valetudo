@@ -1,0 +1,33 @@
+{
+  "components": {
+    "schemas": {
+      "ValetudoProgress": {
+        "type": "object",
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "description": "Datetime in ISO8601 format"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "area",
+              "battery",
+              "time",
+              "percent"
+            ]
+          },
+          "value": {
+            "type": "number"
+          },
+          "total": {
+            "type": "number"
+          },
+          "metaData": {
+            "type": "object"
+          }
+        }
+      }
+    }
+  }
+}
