@@ -83,6 +83,7 @@ const CAPABILITY_TYPE_TO_ROUTER_MAPPING = {
     [capabilities.AutoEmptyDockManualTriggerCapability.TYPE]: capabilityRouters.AutoEmptyDockManualTriggerCapabilityRouter,
     [capabilities.TotalStatisticsCapability.TYPE]: capabilityRouters.StatisticsCapabilityRouter,
     [capabilities.CurrentStatisticsCapability.TYPE]: capabilityRouters.StatisticsCapabilityRouter,
+    [capabilities.ProgressCapability.TYPE]: capabilityRouters.ProgressCapabilityRouter,
     [capabilities.QuirksCapability.TYPE]: capabilityRouters.QuirksCapabilityRouter,
     [capabilities.WifiScanCapability.TYPE]: capabilityRouters.WifiScanCapabilityRouter,
     [capabilities.MopDockCleanManualTriggerCapability.TYPE]: capabilityRouters.MopDockCleanManualTriggerCapabilityRouter,

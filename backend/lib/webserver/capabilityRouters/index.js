@@ -29,6 +29,7 @@ module.exports = {
     ObstacleImagesCapabilityRouter: require("./ObstacleImagesCapabilityRouter"),
     PendingMapChangeHandlingCapabilityRouter: require("./PendingMapChangeHandlingCapabilityRouter"),
     PresetSelectionCapabilityRouter: require("./PresetSelectionCapabilityRouter"),
+    ProgressCapabilityRouter: require("./ProgressCapabilityRouter"),
     QuirksCapabilityRouter: require("./QuirksCapabilityRouter"),
     SimpleToggleCapabilityRouter: require("./SimpleToggleCapabilityRouter"),
     SpeakerTestCapabilityRouter: require("./SpeakerTestCapabilityRouter"),

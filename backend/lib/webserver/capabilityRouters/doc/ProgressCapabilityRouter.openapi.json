@@ -1,0 +1,59 @@
+{
+  "/api/v2/robot/capabilities/ProgressesCapability": {
+    "get": {
+      "tags": [
+        "ProgressesCapability"
+      ],
+      "summary": "Get clean progress",
+      "responses": {
+        "200": {
+          "description": "Ok",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ValetudoProgress"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/api/v2/robot/capabilities/ProgressCapability/properties": {
+    "get": {
+      "tags": [
+        "ProgressCapability"
+      ],
+      "summary": "Get various capability-related properties",
+      "responses": {
+        "200": {
+          "description": "Ok",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "availableStatistics": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "area",
+                        "battery",
+                        "time",
+                        "percent"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

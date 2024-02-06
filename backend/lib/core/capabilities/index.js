@@ -43,6 +43,7 @@ module.exports = {
     PersistentMapControlCapability: require("./PersistentMapControlCapability"),
     PetObstacleAvoidanceControlCapability: require("./PetObstacleAvoidanceControlCapability"),
     PresetSelectionCapability: require("./PresetSelectionCapability"),
+    ProgressCapability: require("./ProgressCapability"),
     QuirksCapability: require("./QuirksCapability"),
     SetMCUTimeCapability: require("./SetMCUTimeCapability"),
     SpeakerTestCapability: require("./SpeakerTestCapability"),
