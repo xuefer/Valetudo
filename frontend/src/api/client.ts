@@ -31,6 +31,7 @@ import {
     NTPClientConfiguration,
     NTPClientStatus,
     Point,
+    ProgressProperties,
     Quirk,
     RobotInformation,
     RobotProperties,
@@ -52,6 +53,7 @@ import {
     ValetudoEvent,
     ValetudoEventInteractionContext,
     ValetudoInformation,
+    ValetudoProgress,
     ValetudoVersion,
     ValetudoWifiNetwork,
     VoicePackManagementCommand,
@@ -991,6 +993,22 @@ export const fetchTotalStatistics = async (): Promise<Array<ValetudoDataPoint>> 
 export const fetchTotalStatisticsProperties = async (): Promise<StatisticsProperties> => {
     return valetudoAPI
         .get<StatisticsProperties>(`/robot/capabilities/${Capability.TotalStatistics}/properties`)
+        .then(({ data }) => {
+            return data;
+        });
+};
+
+export const fetchProgress = async (): Promise<Array<ValetudoProgress>> => {
+    return valetudoAPI
+        .get<Array<ValetudoProgress>>(`/robot/capabilities/${Capability.Progress}`)
+        .then(({ data }) => {
+            return data;
+        });
+};
+
+export const fetchProgressProperties = async (): Promise<ProgressProperties> => {
+    return valetudoAPI
+        .get<ProgressProperties>(`/robot/capabilities/${Capability.Progress}/properties`)
         .then(({ data }) => {
             return data;
         });

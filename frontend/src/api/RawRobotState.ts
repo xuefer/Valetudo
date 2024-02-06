@@ -13,6 +13,7 @@ export interface RawRobotStateMetaData {
 export enum RobotAttributeClass {
     StatusState = "StatusStateAttribute",
     BatteryState = "BatteryStateAttribute",
+    ProgressAttribute = "ProgressAttribute",
     PresetSelectionState = "PresetSelectionStateAttribute",
     AttachmentState = "AttachmentStateAttribute",
     DockStatusState = "DockStatusStateAttribute"

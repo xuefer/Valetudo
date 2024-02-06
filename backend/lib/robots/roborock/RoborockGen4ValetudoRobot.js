@@ -104,6 +104,7 @@ class RoborockGen4ValetudoRobot extends RoborockValetudoRobot {
             capabilities.RoborockMapSegmentationCapability,
             capabilities.RoborockMapSegmentEditCapability,
             capabilities.RoborockMapSegmentRenameCapability,
+            capabilities.RoborockProgressCapability,
             capabilities.RoborockSetMCUTimeCapability
         ].forEach(capability => {
             this.registerCapability(new capability({robot: this}));

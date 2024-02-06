@@ -32,6 +32,8 @@ import {
     fetchObstacleAvoidanceControlState,
     fetchPersistentMapState,
     fetchPresetSelections,
+    fetchProgress,
+    fetchProgressProperties,
     fetchRobotInformation,
     fetchSegments,
     fetchSpeakerVolumeState,
@@ -207,6 +209,8 @@ enum QueryKey {
     CurrentStatisticsProperties = "current_statistics_properties",
     TotalStatistics = "total_statistics",
     TotalStatisticsProperties = "total_statistics_properties",
+    Progress = "progress",
+    ProgressProperties = "progress_properties",
     Quirks = "quirks",
     RobotProperties = "robot_properties",
     ValetudoCustomizations = "valetudo_customizations",
@@ -1328,6 +1332,25 @@ export const useTotalStatisticsPropertiesQuery = () => {
     return useQuery({
         queryKey: [QueryKey.TotalStatisticsProperties],
         queryFn: fetchTotalStatisticsProperties,
+
+        staleTime: Infinity
+    });
+};
+
+export const useProgressQuery = () => {
+    return useQuery({
+        queryKey: [QueryKey.Progress],
+        queryFn: fetchProgress,
+
+        staleTime: 2_000,
+        refetchInterval: 2_000
+    });
+};
+
+export const useProgressPropertiesQuery = () => {
+    return useQuery({
+        queryKey: [QueryKey.Progress],
+        queryFn: fetchProgressProperties,
 
         staleTime: Infinity
     });

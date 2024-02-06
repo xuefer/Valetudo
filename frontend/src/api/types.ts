@@ -29,6 +29,7 @@ export enum Capability {
     MopDockDryManualTrigger = "MopDockDryManualTriggerCapability",
     OperationModeControl = "OperationModeControlCapability",
     PersistentMapControl = "PersistentMapControlCapability",
+    Progress = "ProgressCapability",
     SpeakerTest = "SpeakerTestCapability",
     SpeakerVolumeControl = "SpeakerVolumeControlCapability",
     TotalStatistics = "TotalStatisticsCapability",
@@ -519,6 +520,19 @@ export interface ValetudoDataPoint {
     timestamp: string,
     type: ValetudoDataPointType,
     value: number
+}
+
+export type ValetudoProgressType = "area" | "battery" | "time" | "percent"
+
+export interface ValetudoProgress {
+    timestamp: string,
+    type: ValetudoProgressType,
+    value: number,
+    total: number
+}
+
+export interface ProgressProperties {
+    availableProgresses: Array<ValetudoProgress>
 }
 
 export interface StatisticsProperties {

@@ -11,6 +11,7 @@ import {
     RobotAttributeClass,
     useRobotAttributeQuery,
     useRobotStatusQuery,
+    useProgressQuery,
 } from "../api";
 import {RobotMonochromeIcon} from "../components/CustomIcons";
 import ControlsCard from "./ControlsCard";
@@ -47,6 +48,27 @@ const BatteryProgress = styled(LinearProgress)(({ theme, value }) => {
     };
 });
 
+const CleanProgress = styled(LinearProgress)(({ theme }) => {
+    return {
+        position: "absolute",
+        height: "100%",
+        width: "100%",
+        top: 0,
+        left: 0,
+        borderRadius: theme.shape.borderRadius,
+        [`&.${linearProgressClasses.colorPrimary}`]: {
+            backgroundColor: "transparent",
+            borderWidth: "1px",
+            borderStyle: "solid",
+            borderColor: theme.palette.grey[theme.palette.mode === "light" ? 200 : 700],
+        },
+        [`& .${linearProgressClasses.bar}`]: {
+            backgroundColor:
+                theme.palette.grey[theme.palette.mode === "light" ? 200 : 700],
+        },
+    };
+});
+
 const RobotStatus = (): React.ReactElement => {
     const {
         data: status,
@@ -58,7 +80,13 @@ const RobotStatus = (): React.ReactElement => {
         isPending: isBatteryPending,
         isError: isBatteryError,
     } = useRobotAttributeQuery(RobotAttributeClass.BatteryState);
-    const isPending = isStatusPending || isBatteryPending;
+    const {
+        data: progresses,
+        isPending: isProgressPending,
+        isError: isProgressError,
+    } = useProgressQuery();
+
+    const isPending = isStatusPending || isBatteryPending || isProgressPending;
 
     const stateDetails = React.useMemo(() => {
         if (isStatusError) {
@@ -111,6 +139,24 @@ const RobotStatus = (): React.ReactElement => {
         });
     }, [batteries, isBatteryError]);
 
+    const progressDetails = React.useMemo(() => {
+        if (isProgressError) {
+            return <Typography color="error">Error loading progress</Typography>;
+        }
+
+        if (!Array.isArray(progresses)) {
+            return null;
+        }
+
+        for (const progress of progresses) {
+            if (progress.type === "percent") {
+                return (
+                    <CleanProgress value={progress.value} variant="determinate" />
+                );
+            }
+        }
+    }, [progresses, isProgressError]);
+
     return (
         <ControlsCard
             icon={RobotMonochromeIcon}
@@ -118,8 +164,9 @@ const RobotStatus = (): React.ReactElement => {
             isLoading={isPending}
         >
             <Grid container direction="column">
-                <Grid item container direction="row">
-                    <Grid item>
+                <Grid item container direction="row" position="relative">
+                    {progresses !== undefined && progresses.length !== undefined && progressDetails}
+                    <Grid item zIndex="1">
                         {stateDetails}
                     </Grid>
                 </Grid>
