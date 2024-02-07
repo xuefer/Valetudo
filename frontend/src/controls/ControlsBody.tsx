@@ -9,6 +9,7 @@ import PresetSelectionControl from "./PresetSelection";
 import RobotStatus from "./RobotStatus";
 import Dock from "./Dock";
 import CurrentStatistics from "./CurrentStatistics";
+import Progress from "./Progress";
 import Attachments from "./Attachments";
 import {FanSpeedMediumIcon, WaterGradeLowIcon} from "../components/CustomIcons";
 import React from "react";
@@ -24,6 +25,7 @@ const ControlsBody = (): React.ReactElement => {
         mopDockCleanTriggerSupported,
         mopDockDryTriggerSupported,
         currentStatistics,
+        progress,
     ] = useCapabilitiesSupported(
         Capability.BasicControl,
         Capability.FanSpeedControl,
@@ -32,7 +34,8 @@ const ControlsBody = (): React.ReactElement => {
         Capability.AutoEmptyDockManualTrigger,
         Capability.MopDockCleanManualTrigger,
         Capability.MopDockDryManualTrigger,
-        Capability.CurrentStatistics
+        Capability.CurrentStatistics,
+        Capability.Progress
     );
 
     const {
@@ -91,6 +94,7 @@ const ControlsBody = (): React.ReactElement => {
             }
 
             {currentStatistics && <CurrentStatistics/>}
+            {progress && <Progress/>}
         </Grid>
     );
 };

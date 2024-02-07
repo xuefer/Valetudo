@@ -1,5 +1,5 @@
 //Adapted from https://stackoverflow.com/a/34270811/10951033
-import {ValetudoDataPoint} from "./api";
+import {ValetudoDataPoint, ValetudoProgress} from "./api";
 import {useCallback, useLayoutEffect, useRef} from "react";
 
 export function convertSecondsToHumans(seconds: number, showSeconds = true, showDays = true): string {
@@ -170,6 +170,38 @@ export const median = (numbers: Array<number>): number => { //Note that this wil
 
     return numbers[middle];
 };
+
+export function getFriendlyProgressName(stat: ValetudoProgress) : string {
+    switch (stat.type) {
+        case "area":
+            return "Area";
+        case "time":
+            return "Time";
+        case "percent":
+            return "Percent";
+        case "battery":
+            return "Battery";
+    }
+}
+
+export function getHumanReadableProgress(progress: ValetudoProgress): Array<string> {
+    switch (progress.type) {
+        case "area":
+            return [
+                "-" + ((progress.total - progress.value) / 10000).toFixed(2).padStart(6, "0") + " m²",
+                (progress.total / 10000).toFixed(2).padStart(6, "0") + " m²"
+            ];
+        case "time":
+            return [
+                "-" + convertSecondsToHumans((progress.total - progress.value), true, false),
+                convertSecondsToHumans(progress.total, true, false)
+            ];
+        case "percent":
+            return [ `${progress.value}%`, "" ];
+        case "battery":
+            return [ progress.value.toString(), progress.total.toString() ];
+    }
+}
 
 export function getFriendlyStatName(stat: ValetudoDataPoint) : string {
     switch (stat.type) {
