@@ -5,6 +5,8 @@ import {
     styled,
     Typography,
 } from "@mui/material";
+import RatioBar from "../components/RatioBar";
+import ratioBarClasses from "../components/RatioBar.module.css";
 import React from "react";
 import {
     RobotAttributeClass,
@@ -16,13 +18,16 @@ import {RobotMonochromeIcon} from "../components/CustomIcons";
 import ControlsCard from "./ControlsCard";
 import {useValetudoColorsInverse} from "../hooks/useValetudoColors";
 
-const BatteryProgress = styled(LinearProgress)(({ theme }) => {
+const BatteryProgress = styled(RatioBar)(({ theme }) => {
     return {
         marginTop: -theme.spacing(1),
         borderRadius: theme.shape.borderRadius,
-        [`&.${linearProgressClasses.colorPrimary}`]: {
+        [`& .${ratioBarClasses.ratioBarBase}`]: {
             backgroundColor:
                 theme.palette.grey[theme.palette.mode === "light" ? 200 : 700],
+            "& :nth-child(1)": {
+                opacity: 0.3,
+            }
         },
     };
 });
@@ -108,8 +113,15 @@ const RobotStatus = (): React.ReactElement => {
             return <Typography color="textSecondary">No batteries found</Typography>;
         }
 
+        const batteryProgress = (Array.isArray(progresses) && progresses.length !== 0) ?
+            progresses.filter((progress) => progress.type === "battery") :
+            [];
+
         return batteries.map((battery, index) => {
+            const batteryUsed = batteryProgress[index]?.value ?? 0;
+            const batteryEstimate = (batteryProgress[index]?.total ?? 0) - batteryUsed;
             const batteryColor = getBatteryColor(battery.level);
+            const estimateBatteryColor = palette.red;
 
             return (
                 <Grid2 size="grow" container direction="column" key={index}>
@@ -126,19 +138,29 @@ const RobotStatus = (): React.ReactElement => {
                     </Grid2>
                     <Grid2 sx={{ flexGrow: 1, minHeight: "1rem" }}>
                         <BatteryProgress
-                            value={battery.level}
-                            variant="determinate"
-                            sx={{
-                                [`& .${linearProgressClasses.bar}`]: {
-                                    backgroundColor: batteryColor,
-                                },
-                            }}
+                            total={100}
+                            partitions={
+                                [
+                                    {
+                                        value: battery.level - batteryEstimate,
+                                        color: batteryColor
+                                    },
+                                    {
+                                        value: batteryEstimate,
+                                        color: estimateBatteryColor
+                                    },
+                                    {
+                                        value: batteryUsed,
+                                        color: estimateBatteryColor
+                                    }
+                                ]
+                            }
                         />
                     </Grid2>
                 </Grid2>
             );
         });
-    }, [batteries, isBatteryError, palette]);
+    }, [batteries, isBatteryError, palette, progresses]);
 
     const progressDetails = React.useMemo(() => {
         if (isProgressError) {

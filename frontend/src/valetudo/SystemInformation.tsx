@@ -12,6 +12,7 @@ import {
     Paper,
     Skeleton,
     Stack,
+    styled,
     Table,
     TableBody,
     TableCell,
@@ -31,12 +32,26 @@ import {
     CPUUsageType,
 } from "../api";
 import RatioBar from "../components/RatioBar";
+import ratioBarClasses from "../components/RatioBar.module.css";
+import {darken, lighten} from "@mui/material";
 import {convertSecondsToHumans} from "../utils";
 import {useIsMobileView} from "../hooks";
 import ReloadableCard from "../components/ReloadableCard";
 import PaperContainer from "../components/PaperContainer";
 import TextInformationGrid from "../components/TextInformationGrid";
 import {useValetudoColorsInverse} from "../hooks/useValetudoColors";
+
+const ThemedRatioBar = styled(RatioBar)(({ theme }) => {
+    const progressBackgroundColor = theme.palette.mode === "light" ?
+        lighten(theme.palette.primary.main, 0.62) :
+        darken(theme.palette.primary.main, 0.5);
+    return {
+        [`& .${ratioBarClasses.ratioBarBase}`]: {
+            backgroundColor: progressBackgroundColor,
+        }
+    };
+});
+
 
 const SystemRuntimeInfo = (): React.ReactElement => {
     const {
@@ -370,7 +385,7 @@ const SystemInformation = (): React.ReactElement => {
                         System Memory (RAM)
                     </Typography>
 
-                    <RatioBar
+                    <ThemedRatioBar
                         total={systemHostInfo.mem.total}
                         totalLabel={`${((systemHostInfo.mem.free) / 1024 / 1024).toFixed(2)} MiB`}
                         partitions={
@@ -406,7 +421,7 @@ const SystemInformation = (): React.ReactElement => {
                     {
                         systemHostInfo.cpus.map((cpu, i) => {
                             return (
-                                <RatioBar
+                                <ThemedRatioBar
                                     key={`cpu_${i}`}
                                     style={{marginTop: "4px"}}
                                     total={100}
