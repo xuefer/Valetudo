@@ -32,15 +32,32 @@ import {
     useValetudoInformationQuery,
 } from "../api";
 import RatioBar from "../components/RatioBar";
+import ratioBarClasses from "../components/RatioBar.module.css";
+import {darken, lighten} from "@mui/material";
 import {convertSecondsToHumans} from "../utils";
 import {useIsMobileView} from "../hooks";
 import ReloadableCard from "../components/ReloadableCard";
 import PaperContainer from "../components/PaperContainer";
 import TextInformationGrid from "../components/TextInformationGrid";
 
-const ThickLinearProgressWithTopMargin = styled(LinearProgress)({
-    marginTop: "2px",
-    height: "6px"
+// See https://github.com/mui-org/material-ui/blob/v5.0.1/packages/mui-material/src/LinearProgress/LinearProgress.js#L93
+const ThemedRatioBar = styled(RatioBar)(({ theme }) => {
+    const progressBackgroundColor = theme.palette.mode === "light" ?
+        lighten(theme.palette.primary.main, 0.62) :
+        darken(theme.palette.primary.main, 0.5);
+    return {
+        [`& .${ratioBarClasses.ratioBarBase}`]: {
+            backgroundColor: progressBackgroundColor,
+        }
+    };
+});
+
+const ThickLinearProgressWithTopMargin = styled(LinearProgress)(({ theme }) => {
+    return {
+        marginTop: "2px",
+        borderRadius: theme.shape.borderRadius,
+        height: "6px"
+    };
 });
 
 
@@ -366,7 +383,7 @@ const SystemInformation = (): React.ReactElement => {
                         System Memory (RAM)
                     </Typography>
 
-                    <RatioBar
+                    <ThemedRatioBar
                         total={systemHostInfo.mem.total}
                         totalLabel={`${((systemHostInfo.mem.free) / 1024 / 1024).toFixed(2)} MiB`}
                         partitions={

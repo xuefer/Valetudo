@@ -1,9 +1,10 @@
 import {CSSProperties, FunctionComponent} from "react";
 import styles from "./RatioBar.module.css";
-import {darken, lighten, useTheme} from "@mui/material";
+import {useTheme} from "@mui/material";
+import {styled} from "@mui/system";
 
 type RatioBarPartition = {
-    label: string;
+    label?: string;
     valueLabel?: string;
     value: number;
     color: NonNullable<CSSProperties["color"]>;
@@ -13,12 +14,19 @@ type RatioBarProps = {
     total: number;
     totalLabel?: string;
     partitions: Array<RatioBarPartition>;
+    className?: string;
 };
+
+const RatioBarBase = styled("span", {})(({ theme }) => {
+    return {
+        borderRadius: theme.shape.borderRadius,
+    };
+});
 
 //Mostly adapted from the Material-UI LinearProgress bar https://github.com/mui-org/material-ui/blob/master/packages/material-ui/src/LinearProgress/LinearProgress.js
 const RatioBar: FunctionComponent<RatioBarProps> = (props) => {
     const theme = useTheme();
-    const {total, partitions} = props;
+    const {total, partitions, className} = props;
 
     let totalPercent = 0;
 
@@ -36,17 +44,10 @@ const RatioBar: FunctionComponent<RatioBarProps> = (props) => {
         };
     });
 
-    // See https://github.com/mui-org/material-ui/blob/v5.0.1/packages/mui-material/src/LinearProgress/LinearProgress.js#L93
-    const progressBackgroundColor = theme.palette.mode === "light" ?
-        lighten(theme.palette.primary.main, 0.62) :
-        darken(theme.palette.primary.main, 0.5);
     return (
-        <>
-            <span
+        <span className={className}>
+            <RatioBarBase
                 className={styles.ratioBarBase}
-                style={{
-                    backgroundColor: progressBackgroundColor
-                }}
                 title={props.totalLabel}
             >
                 {mappedPartitions.reverse().map((mp, i) => {
@@ -63,10 +64,10 @@ const RatioBar: FunctionComponent<RatioBarProps> = (props) => {
                         </span>
                     );
                 })}
-            </span>
+            </RatioBarBase>
             <span>
                 {mappedPartitions.reverse().map((mp, i) => {
-                    return (
+                    return mp.label && (
                         <span
                             key={"legend." + i}
                             style={{
@@ -80,7 +81,7 @@ const RatioBar: FunctionComponent<RatioBarProps> = (props) => {
                     );
                 })}
             </span>
-        </>
+        </span>
     );
 };
 

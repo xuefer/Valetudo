@@ -6,6 +6,8 @@ import {
     Typography,
 } from "@mui/material";
 import { green, red, yellow } from "@mui/material/colors";
+import RatioBar from "../components/RatioBar";
+import ratioBarClasses from "../components/RatioBar.module.css";
 import React from "react";
 import {
     RobotAttributeClass,
@@ -22,6 +24,8 @@ const batteryLevelColors = {
     green: green[500],
 };
 
+const estimateBatteryColor = "#DF5618";
+
 const getBatteryColor = (level: number): "red" | "yellow" | "green" => {
     if (level > 60) {
         return "green";
@@ -34,16 +38,15 @@ const getBatteryColor = (level: number): "red" | "yellow" | "green" => {
     return "red";
 };
 
-const BatteryProgress = styled(LinearProgress)(({ theme, value }) => {
+const BatteryProgress = styled(RatioBar)(({ theme }) => {
     return {
         marginTop: -theme.spacing(1),
-        borderRadius: theme.shape.borderRadius,
-        [`&.${linearProgressClasses.colorPrimary}`]: {
-            backgroundColor:
-                theme.palette.grey[theme.palette.mode === "light" ? 200 : 700],
-        },
-        [`& .${linearProgressClasses.bar}`]: {
-            backgroundColor: getBatteryColor(value ?? 0),
+        [`& .${ratioBarClasses.ratioBarBase}`]: {
+            backgroundColor: theme.palette.grey[theme.palette.mode === "light" ? 200 : 700],
+
+            "& :nth-child(1)": {
+                opacity: 0.3,
+            }
         },
     };
 });
@@ -118,7 +121,13 @@ const RobotStatus = (): React.ReactElement => {
             return <Typography color="textSecondary">No batteries found</Typography>;
         }
 
+        const batteryProgress = (Array.isArray(progresses) && progresses.length !== 0) ?
+            progresses.filter((progress) => progress.type === "battery") :
+            [];
+
         return batteries.map((battery, index) => {
+            const batteryUsed = batteryProgress[index]?.value ?? 0;
+            const batteryEstimate = (batteryProgress[index]?.total ?? 0) - batteryUsed;
             return (
                 <Grid item container direction="column" key={index}>
                     <Grid item>
@@ -132,12 +141,30 @@ const RobotStatus = (): React.ReactElement => {
                         </Typography>
                     </Grid>
                     <Grid item sx={{ flexGrow: 1, minHeight: "1rem"}}>
-                        <BatteryProgress value={battery.level} variant="determinate" />
+                        <BatteryProgress
+                            total={100}
+                            partitions={
+                                [
+                                    {
+                                        value: battery.level - batteryEstimate,
+                                        color: getBatteryColor(battery.level)
+                                    },
+                                    {
+                                        value: batteryEstimate,
+                                        color: estimateBatteryColor
+                                    },
+                                    {
+                                        value: batteryUsed,
+                                        color: estimateBatteryColor
+                                    }
+                                ]
+                            }
+                        />
                     </Grid>
                 </Grid>
             );
         });
-    }, [batteries, isBatteryError]);
+    }, [batteries, isBatteryError, progresses]);
 
     const progressDetails = React.useMemo(() => {
         if (isProgressError) {
