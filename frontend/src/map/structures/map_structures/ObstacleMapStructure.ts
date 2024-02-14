@@ -1,10 +1,35 @@
 import MapStructure from "./MapStructure";
-import obstacleIconSVG from "../icons/obstacle.svg";
+import bathroomScaleIconSVG from "../icons/obstacles/bathroom-scale.svg";
+import cableIconSVG from "../icons/obstacles/cable.svg";
+import defaultIconSVG from "../icons/obstacles/default.svg";
+import fabricIconSVG from "../icons/obstacles/fabric.svg";
+import furnitureIconSVG from "../icons/obstacles/furniture.svg";
+import obstacleIconSVG from "../icons/obstacles/obstacle.svg";
+import powerStripIconSVG from "../icons/obstacles/power-strip.svg";
+import shoeIconSVG from "../icons/obstacles/shoe.svg";
 import {Canvas2DContextTrackingWrapper} from "../../utils/Canvas2DContextTrackingWrapper";
 import {considerHiDPI} from "../../utils/helpers";
 
-const img = new Image();
-img.src = obstacleIconSVG;
+function newImg(src: string) : HTMLImageElement {
+    const img = new Image();
+    img.src = src;
+    return img;
+}
+
+type ObstacleIcons = {
+    [key: string]: HTMLImageElement
+}
+
+const defaultImg = newImg(defaultIconSVG);
+const obstacleIcons: ObstacleIcons = {
+    "bathroom scale": newImg(bathroomScaleIconSVG),
+    cable: newImg(cableIconSVG),
+    fabric: newImg(fabricIconSVG),
+    furniture: newImg(furnitureIconSVG),
+    obstacle: newImg(obstacleIconSVG),
+    "power strip": newImg(powerStripIconSVG),
+    shoe: newImg(shoeIconSVG),
+};
 
 class ObstacleMapStructure extends MapStructure {
     public static TYPE = "ObstacleMapStructure";
@@ -21,6 +46,8 @@ class ObstacleMapStructure extends MapStructure {
         const p0 = new DOMPoint(this.x0, this.y0).matrixTransform(transformationMatrixToScreenSpace);
 
 
+        const name = (/^(.*) \(/.exec(this.label ?? "") ?? [])[1] ?? "";
+        const img = obstacleIcons[name.toLowerCase()] ?? defaultImg;
         const scaledSize = {
             width: Math.max(considerHiDPI(img.width) / (considerHiDPI(8) / scaleFactor), considerHiDPI(img.width) * 0.3),
             height: Math.max(considerHiDPI(img.height) / (considerHiDPI(8) / scaleFactor), considerHiDPI(img.height) * 0.3)
