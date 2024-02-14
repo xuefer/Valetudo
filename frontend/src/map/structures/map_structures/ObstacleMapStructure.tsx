@@ -1,5 +1,12 @@
 import MapStructure from "./MapStructure";
-import obstacleIconSVG from "../icons/obstacle.svg";
+import bathroomScaleIconSVG from "../icons/obstacles/bathroom-scale.svg";
+import cableIconSVG from "../icons/obstacles/cable.svg";
+import defaultIconSVG from "../icons/obstacles/default.svg";
+import fabricIconSVG from "../icons/obstacles/fabric.svg";
+import furnitureIconSVG from "../icons/obstacles/furniture.svg";
+import obstacleIconSVG from "../icons/obstacles/obstacle.svg";
+import powerStripIconSVG from "../icons/obstacles/power-strip.svg";
+import shoeIconSVG from "../icons/obstacles/shoe.svg";
 import {Canvas2DContextTrackingWrapper} from "../../utils/Canvas2DContextTrackingWrapper";
 import {calculateBoxAroundPoint, considerHiDPI, isInsideBox} from "../../utils/helpers";
 import {PointCoordinates} from "../../utils/types";
@@ -7,22 +14,47 @@ import {StructureInterceptionHandlerResult} from "../Structure";
 import ObstacleImage from "../../../components/ObstacleImage";
 import {Typography} from "@mui/material";
 
-const img = new Image();
-img.src = obstacleIconSVG;
+function newImg(src: string) : HTMLImageElement {
+    const img = new Image();
+    img.src = src;
+    return img;
+}
+
+type ObstacleIcons = {
+    [key: string]: HTMLImageElement
+}
+
+const defaultImg = newImg(defaultIconSVG);
+const obstacleIcons: ObstacleIcons = {
+    "bathroom scale": newImg(bathroomScaleIconSVG),
+    cable: newImg(cableIconSVG),
+    fabric: newImg(fabricIconSVG),
+    furniture: newImg(furnitureIconSVG),
+    obstacle: newImg(obstacleIconSVG),
+    "power strip": newImg(powerStripIconSVG),
+    shoe: newImg(shoeIconSVG),
+};
 
 class ObstacleMapStructure extends MapStructure {
     public static readonly TYPE = "ObstacleMapStructure";
     private label: string | undefined;
     private id: string | undefined;
+    private name: string;
 
     constructor(x0: number, y0: number, label?: string, id?: string) {
         super(x0, y0);
 
         this.label = label;
         this.id = id;
+        this.name = (/^(.*) \(/.exec(this.label ?? "") ?? [])[1] ?? "";
     }
 
+    private getIcon(): HTMLImageElement {
+        return obstacleIcons[this.name.toLowerCase()] ?? defaultImg;
+    }
     private getIconSize(scaleFactor: number): { width: number; height: number } {
+        const img = this.getIcon();
+
         return {
             width: considerHiDPI(img.width) / (considerHiDPI(8) / scaleFactor),
             height: considerHiDPI(img.height) / (considerHiDPI(8) / scaleFactor)
@@ -37,6 +69,8 @@ class ObstacleMapStructure extends MapStructure {
 
         const halfIconW = width / 2;
         const halfIconH = height / 2;
+
+        const img = this.getIcon();
 
         ctx.drawImage(
             this.getOptimizedImage(img, width, height),
