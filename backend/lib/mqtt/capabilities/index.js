@@ -10,6 +10,7 @@ module.exports = {
     MapSegmentationCapabilityMqttHandle: require("./MapSegmentationCapabilityMqttHandle"),
     ObstacleAvoidanceControlCapabilityMqttHandle: require("./ObstacleAvoidanceControlCapabilityMqttHandle"),
     PresetSelectionCapabilityMqttHandle: require("./PresetSelectionCapabilityMqttHandle"),
+    ProgressCapabilityMqttHandle: require("./ProgressCapabilityMqttHandle"),
     SpeakerVolumeControlCapabilityMqttHandle: require("./SpeakerVolumeControlCapabilityMqttHandle"),
     TotalStatisticsCapabilityMqttHandle: require("./TotalStatisticsCapabilityMqttHandle"),
     WifiConfigurationCapabilityMqttHandle: require("./WifiConfigurationCapabilityMqttHandle"),

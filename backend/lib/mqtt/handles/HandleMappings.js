@@ -17,6 +17,7 @@ const CAPABILITY_TYPE_TO_HANDLE_MAPPING = {
     [capabilities.AutoEmptyDockManualTriggerCapability.TYPE]: capabilityHandles.AutoEmptyDockManualTriggerCapabilityMqttHandle,
     [capabilities.CurrentStatisticsCapability.TYPE]: capabilityHandles.CurrentStatisticsCapabilityMqttHandle,
     [capabilities.TotalStatisticsCapability.TYPE]: capabilityHandles.TotalStatisticsCapabilityMqttHandle,
+    [capabilities.ProgressCapability.TYPE]: capabilityHandles.ProgressCapabilityMqttHandle,
     [capabilities.SpeakerVolumeControlCapability.TYPE]: capabilityHandles.SpeakerVolumeControlCapabilityMqttHandle,
     [capabilities.KeyLockCapability.TYPE]: capabilityHandles.KeyLockCapabilityMqttHandle,
     [capabilities.ObstacleAvoidanceControlCapability.TYPE]: capabilityHandles.ObstacleAvoidanceControlCapabilityMqttHandle

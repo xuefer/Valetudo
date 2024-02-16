@@ -285,6 +285,7 @@
               "enum": [
                 "ConsumableMonitoringCapability",
                 "CurrentStatisticsCapability",
+                "ProgressCapability",
                 "TotalStatisticsCapability",
                 "SpeakerVolumeControlCapability",
                 "KeyLockCapability",
