@@ -311,7 +311,7 @@ class RoborockValetudoRobot extends MiioValetudoRobot {
                 } else if (data["in_cleaning"] === 3) {
                     statusMetaData.segment_cleaning = true;
                 }
-            } else if (statusValue === stateAttrs.StatusStateAttribute.VALUE.ERROR) {
+            } else if (statusValue === stateAttrs.StatusStateAttribute.VALUE.ERROR && data["error_code"] !== undefined) {
                 statusError = RoborockValetudoRobot.MAP_ERROR_CODE(data["error_code"]);
             }
 
