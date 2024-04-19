@@ -308,7 +308,7 @@ class RoborockValetudoRobot extends MiioValetudoRobot {
                     statusMetaData.segment_cleaning = true;
                 }
             } else if (statusValue === stateAttrs.StatusStateAttribute.VALUE.ERROR) {
-                statusError = RoborockValetudoRobot.MAP_ERROR_CODE(data["error_code"]);
+                statusError = RoborockValetudoRobot.MAP_ERROR_CODE(data["dock_error_code"] || data["error_code"]);
             }
 
             newStateAttr = new stateAttrs.StatusStateAttribute({
@@ -1070,6 +1070,128 @@ RoborockValetudoRobot.MAP_ERROR_CODE = (vendorErrorCode) => {
             parameters.subsystem = ValetudoRobotError.SUBSYSTEM.SENSORS;
             parameters.message = "Wall sensor fault";
             break;
+
+        case 127:
+            parameters.severity.kind = ValetudoRobotError.SEVERITY_KIND.PERMANENT;
+            parameters.severity.level = ValetudoRobotError.SEVERITY_LEVEL.CATASTROPHIC;
+            parameters.subsystem = ValetudoRobotError.SUBSYSTEM.DOCK;
+            parameters.message = "Dock Fan Error";
+            break;
+        case 128:
+            parameters.severity.kind = ValetudoRobotError.SEVERITY_KIND.PERMANENT;
+            parameters.severity.level = ValetudoRobotError.SEVERITY_LEVEL.CATASTROPHIC;
+            parameters.subsystem = ValetudoRobotError.SUBSYSTEM.ATTACHMENTS;
+            parameters.message = "Mopping module short-circuited.";
+            break;
+        case 129:
+            parameters.severity.kind = ValetudoRobotError.SEVERITY_KIND.PERMANENT;
+            parameters.severity.level = ValetudoRobotError.SEVERITY_LEVEL.CATASTROPHIC;
+            parameters.subsystem = ValetudoRobotError.SUBSYSTEM.ATTACHMENTS;
+            parameters.message = "Mopping module motor circuit breaker";
+            break;
+        case 130:
+            parameters.severity.kind = ValetudoRobotError.SEVERITY_KIND.PERMANENT;
+            parameters.severity.level = ValetudoRobotError.SEVERITY_LEVEL.CATASTROPHIC;
+            parameters.subsystem = ValetudoRobotError.SUBSYSTEM.DOCK;
+            parameters.message = "Over-current of clean water tank peristaltic pump";
+            break;
+        case 131:
+            parameters.severity.kind = ValetudoRobotError.SEVERITY_KIND.PERMANENT;
+            parameters.severity.level = ValetudoRobotError.SEVERITY_LEVEL.CATASTROPHIC;
+            parameters.subsystem = ValetudoRobotError.SUBSYSTEM.DOCK;
+            parameters.message = "Over-current of clean water tank peristaltic pump";
+            break;
+        case 134:
+            parameters.severity.kind = ValetudoRobotError.SEVERITY_KIND.PERMANENT;
+            parameters.severity.level = ValetudoRobotError.SEVERITY_LEVEL.CATASTROPHIC;
+            parameters.subsystem = ValetudoRobotError.SUBSYSTEM.DOCK;
+            parameters.message = "Air pump switch error";
+            break;
+        case 135:
+            parameters.severity.kind = ValetudoRobotError.SEVERITY_KIND.PERMANENT;
+            parameters.severity.level = ValetudoRobotError.SEVERITY_LEVEL.CATASTROPHIC;
+            parameters.subsystem = ValetudoRobotError.SUBSYSTEM.DOCK;
+            parameters.message = "Wash roller locked rotor";
+            break;
+        case 137:
+            parameters.severity.kind = ValetudoRobotError.SEVERITY_KIND.PERMANENT;
+            parameters.severity.level = ValetudoRobotError.SEVERITY_LEVEL.CATASTROPHIC;
+            parameters.subsystem = ValetudoRobotError.SUBSYSTEM.DOCK;
+            parameters.message = "Wash roller motor temperature too high";
+            break;
+        case 138:
+            parameters.severity.kind = ValetudoRobotError.SEVERITY_KIND.PERMANENT;
+            parameters.severity.level = ValetudoRobotError.SEVERITY_LEVEL.CATASTROPHIC;
+            parameters.subsystem = ValetudoRobotError.SUBSYSTEM.CORE;
+            parameters.message = "Main brush locked rotor";
+            break;
+        case 140:
+            parameters.severity.kind = ValetudoRobotError.SEVERITY_KIND.PERMANENT;
+            parameters.severity.level = ValetudoRobotError.SEVERITY_LEVEL.CATASTROPHIC;
+            parameters.subsystem = ValetudoRobotError.SUBSYSTEM.CORE;
+            parameters.message = "Main brush motor temperature too high";
+            break;
+        case 141:
+            parameters.severity.kind = ValetudoRobotError.SEVERITY_KIND.PERMANENT;
+            parameters.severity.level = ValetudoRobotError.SEVERITY_LEVEL.CATASTROPHIC;
+            parameters.subsystem = ValetudoRobotError.SUBSYSTEM.CORE;
+            parameters.message = "Left wheel motor temperature too high";
+            break;
+        case 143:
+            parameters.severity.kind = ValetudoRobotError.SEVERITY_KIND.PERMANENT;
+            parameters.severity.level = ValetudoRobotError.SEVERITY_LEVEL.CATASTROPHIC;
+            parameters.subsystem = ValetudoRobotError.SUBSYSTEM.CORE;
+            parameters.message = "Right wheel motor temperature too high";
+            break;
+        case 145:
+            parameters.severity.kind = ValetudoRobotError.SEVERITY_KIND.PERMANENT;
+            parameters.severity.level = ValetudoRobotError.SEVERITY_LEVEL.CATASTROPHIC;
+            parameters.subsystem = ValetudoRobotError.SUBSYSTEM.DOCK;
+            parameters.message = "Dirty water pump error";
+            break;
+        case 147:
+            parameters.severity.kind = ValetudoRobotError.SEVERITY_KIND.PERMANENT;
+            parameters.severity.level = ValetudoRobotError.SEVERITY_LEVEL.CATASTROPHIC;
+            parameters.subsystem = ValetudoRobotError.SUBSYSTEM.DOCK;
+            parameters.message = "Mop Dock Cleaning Brush positioning error - left";
+            break;
+        case 148:
+            parameters.severity.kind = ValetudoRobotError.SEVERITY_KIND.PERMANENT;
+            parameters.severity.level = ValetudoRobotError.SEVERITY_LEVEL.CATASTROPHIC;
+            parameters.subsystem = ValetudoRobotError.SUBSYSTEM.DOCK;
+            parameters.message = "Mop Dock Cleaning Brush positioning error - middle";
+            break;
+        case 149:
+            parameters.severity.kind = ValetudoRobotError.SEVERITY_KIND.PERMANENT;
+            parameters.severity.level = ValetudoRobotError.SEVERITY_LEVEL.CATASTROPHIC;
+            parameters.subsystem = ValetudoRobotError.SUBSYSTEM.DOCK;
+            parameters.message = "Mop Dock Cleaning Brush positioning error - right";
+            break;
+        case 150:
+            parameters.severity.kind = ValetudoRobotError.SEVERITY_KIND.PERMANENT;
+            parameters.severity.level = ValetudoRobotError.SEVERITY_LEVEL.CATASTROPHIC;
+            parameters.subsystem = ValetudoRobotError.SUBSYSTEM.DOCK;
+            parameters.message = "Solenoid valve error";
+            break;
+
+        case 154:
+            parameters.severity.kind = ValetudoRobotError.SEVERITY_KIND.PERMANENT;
+            parameters.severity.level = ValetudoRobotError.SEVERITY_LEVEL.CATASTROPHIC;
+            parameters.subsystem = ValetudoRobotError.SUBSYSTEM.MOTORS;
+            parameters.message = "Side brush error";
+            break;
+        case 156:
+            parameters.severity.kind = ValetudoRobotError.SEVERITY_KIND.PERMANENT;
+            parameters.severity.level = ValetudoRobotError.SEVERITY_LEVEL.CATASTROPHIC;
+            parameters.subsystem = ValetudoRobotError.SUBSYSTEM.DOCK;
+            parameters.message = "Dock ODD Error";
+            break;
+    }
+
+    if (parameters.subsystem == ValetudoRobotError.SUBSYSTEM.DOCK &&
+        parameters.severity.kind == ValetudoRobotError.SEVERITY_KIND.PERMANENT) {
+        const dockCommonErrorMessage = "An abnormality inside the base is detected, plug in and unplug the power supply and try again.";
+        parameters.message = dockCommonErrorMessage + " " + parameters.message;
     }
 
     return new ValetudoRobotError(parameters);
