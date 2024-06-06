@@ -1,8 +1,9 @@
 import {useProgressQuery} from "../api";
-import {Box, Grid, Paper, Typography} from "@mui/material";
+import {Grid, Typography} from "@mui/material";
 import {HourglassTop as ProgressIcon} from "@mui/icons-material";
 import React from "react";
 import {getFriendlyProgressName, getHumanReadableProgress} from "../utils";
+import ControlsCard from "./ControlsCard";
 
 const Progress = (): React.ReactElement => {
     const {
@@ -39,25 +40,11 @@ const Progress = (): React.ReactElement => {
     }
 
     return (
-        <Grid item>
-            <Paper>
-                <Grid container direction="column">
-                    <Box px={2} pt={1}>
-                        <Grid item container alignItems="center" spacing={1}>
-                            <Grid item><ProgressIcon/></Grid>
-                            <Grid item>
-                                <Typography variant="subtitle1">
-                                    Clean Estimate
-                                </Typography>
-                            </Grid>
-                        </Grid>
-                        <Grid container direction="row" sx={{paddingBottom: "8px", paddingTop: "8px", maxHeight: "4em"}}>
-                            {body}
-                        </Grid>
-                    </Box>
-                </Grid>
-            </Paper>
-        </Grid>
+        <ControlsCard icon={ProgressIcon} title="Clean Estimate">
+            <Grid container direction="row">
+                {body}
+            </Grid>
+        </ControlsCard>
     );
 };
 
