@@ -867,6 +867,7 @@ RoborockValetudoRobot.MAP_ERROR_CODE = (vendorErrorCode) => {
             break;
 
         case 32:
+        case 36:
             parameters.severity.kind = ValetudoRobotError.SEVERITY_KIND.PERMANENT;
             parameters.severity.level = ValetudoRobotError.SEVERITY_LEVEL.WARNING;
             parameters.subsystem = ValetudoRobotError.SUBSYSTEM.DOCK;
