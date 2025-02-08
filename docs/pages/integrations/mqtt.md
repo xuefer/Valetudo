@@ -66,6 +66,8 @@ settings page.
        - [Lock Keys (`enabled`)](#lockkeysenabled)
      - [Mode control (`OperationModeControlCapability`)](#modecontroloperationmodecontrolcapability)
        - [Mode (`preset`)](#modepreset)
+     - [Mop Dock Clean Manual Trigger (`MopDockCleanManualTriggerCapability`)](#mopdockcleanmanualtriggermopdockcleanmanualtriggercapability)
+       - [Mop Dock Clean Manual Trigger (`trigger`)](#mopdockcleanmanualtriggertrigger)
      - [Obstacle Avoidance (`ObstacleAvoidanceControlCapability`)](#obstacleavoidanceobstacleavoidancecontrolcapability)
        - [Obstacle Avoidance (`enabled`)](#obstacleavoidanceenabled)
      - [Pet Obstacle Avoidance (`PetObstacleAvoidanceControlCapability`)](#petobstacleavoidancepetobstacleavoidancecontrolcapability)
@@ -159,6 +161,7 @@ settings page.
 - [Total Statistics Count (`sensor.mqtt`)](#totalstatisticscountcount)
 - [Total Statistics Time (`sensor.mqtt`)](#totalstatisticstimetime)
 - [Trigger Auto Empty Dock (`button.mqtt`)](#autoemptydockmanualtriggertrigger)
+- [Trigger Mop Dock Clean (`switch.mqtt`)](#mopdockcleanmanualtriggertrigger)
 - [Vacuum (`vacuum.mqtt`)](#robot)
 - [Wastewater Dock Component (`sensor.mqtt`)](#wastewaterwatertankdirty)
 - [Water (`select.mqtt`)](#waterpreset)
@@ -574,6 +577,32 @@ Sample payload:
 - Command topic: `<TOPIC PREFIX>/<IDENTIFIER>/MapSegmentationCapability/clean/set`
 - Command response topic: `<TOPIC PREFIX>/<IDENTIFIER>/MapSegmentationCapability/clean`
 - Data type: [string](https://homieiot.github.io/specification/#string) (format: `same json as the REST interface`)
+
+
+
+
+
+#### Mop Dock Clean Manual Trigger (`MopDockCleanManualTriggerCapability`)
+
+*Node, capability: [MopDockCleanManualTriggerCapability](/pages/usage/capabilities-overview/#mopdockcleanmanualtriggercapability)*
+
+##### Mop Dock Clean Manual Trigger (`trigger`)
+
+*Property, readable, settable, retained*
+
+- Read topic: `<TOPIC PREFIX>/<IDENTIFIER>/MopDockCleanManualTriggerCapability/trigger`
+- Set topic: `<TOPIC PREFIX>/<IDENTIFIER>/MopDockCleanManualTriggerCapability/trigger/set`
+- Data type: [enum](https://homieiot.github.io/specification/#enum) (allowed payloads: `ON`, `OFF`)
+
+Sample value:
+
+```
+OFF
+```
+
+Home Assistant components controlled by this property:
+
+- Trigger Mop Dock Clean ([`switch.mqtt`](https://www.home-assistant.io/integrations/switch.mqtt/))
 
 
 
