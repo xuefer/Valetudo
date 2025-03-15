@@ -75,6 +75,7 @@ export enum RawMapEntityType {
     VirtualWall = "virtual_wall",
     NoGoArea = "no_go_area",
     NoMopArea = "no_mop_area",
+    CliffNoGoArea = "cliff_no_go_area",
     ActiveZone = "active_zone",
     Carpet = "carpet",
     Threshold = "threshold",

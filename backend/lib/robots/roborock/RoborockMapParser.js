@@ -29,7 +29,7 @@ const BlockTypes = {
     "ENEMIES": 27, // Locations of other vacuum robots detected by the AI camera (yes, really.)
     "DOOR_SILL_NO_GO_AREAS": 28, // ??
     "STUCK_POINTS": 29, // Seems to mark a spot where the robot gets stuck repeatedly as a hint to the user to create a no-go area
-    "CLIFF_NO_GO_AREAS": 30, // ???
+    "CLIFF_NO_GO_AREAS": 30, // Auto detected cliff areas
     "SMART_DOOR_SILL_NO_GO_AREAS": 31, // ????
     "SEGMENT_MATERIAL_DIRECTIONS": 32,
     "DIGEST": 1024
@@ -145,8 +145,8 @@ class RoborockMapParser {
             case BlockTypes.VIRTUAL_WALLS:
                 return this.PARSE_STRUCTURES_BLOCK(block, false);
             case BlockTypes.NO_GO_AREAS:
-                return this.PARSE_STRUCTURES_BLOCK(block, true);
             case BlockTypes.NO_MOP_AREAS:
+            case BlockTypes.CLIFF_NO_GO_AREAS:
                 return this.PARSE_STRUCTURES_BLOCK(block, true);
             case BlockTypes.CURRENTLY_CLEANED_SEGMENTS:
                 return this.PARSE_SEGMENTS_BLOCK(block);
@@ -610,6 +610,15 @@ class RoborockMapParser {
                     entities.push(new mapEntities.PolygonMapEntity({
                         points: TransformRoborockCoordinateArraysToValetudoCoordinateArrays(area),
                         type: mapEntities.PolygonMapEntity.TYPE.NO_MOP_AREA
+                    }));
+                });
+            }
+
+            if (blocks[BlockTypes.CLIFF_NO_GO_AREAS]) {
+                blocks[BlockTypes.CLIFF_NO_GO_AREAS].forEach(area => {
+                    entities.push(new mapEntities.PolygonMapEntity({
+                        points: TransformRoborockCoordinateArraysToValetudoCoordinateArrays(area),
+                        type: mapEntities.PolygonMapEntity.TYPE.CLIFF_NO_GO_AREA
                     }));
                 });
             }
