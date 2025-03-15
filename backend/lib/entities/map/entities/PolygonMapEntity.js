@@ -23,6 +23,7 @@ PolygonMapEntity.TYPE = Object.freeze({
     NO_GO_AREA: "no_go_area",
     NO_MOP_AREA: "no_mop_area",
     CARPET: "carpet",
+    CLIFF_NO_GO_AREA: "cliff_no_go_area",
 
     RAMP: "ramp",
 });
