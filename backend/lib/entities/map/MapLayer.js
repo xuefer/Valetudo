@@ -193,6 +193,7 @@ MapLayer.COORDINATE_TUPLE_SORT = (a, b) => {
  *
  */
 MapLayer.TYPE = Object.freeze({
+    CARPET: "carpet",
     FLOOR: "floor",
     WALL: "wall",
     SEGMENT: "segment"
