@@ -24,6 +24,7 @@ const BlockTypes = {
     "CURRENTLY_CLEANED_SEGMENTS": 11,
     "NO_MOP_AREAS": 12,
     "OBSTACLES": 15,
+    "CARPET_MAP": 17, // width * height of 1s or 0s mark
     "NO_VAC_AREAS": 23, // The opposite of a no mop area? Why would you need that?
     "SEGMENT_MATERIALS": 24,
     "ENEMIES": 27, // Locations of other vacuum robots detected by the AI camera (yes, really.)
@@ -156,6 +157,8 @@ class RoborockMapParser {
                 return this.PARSE_SEGMENT_MATERIALS_BLOCK(block);
             case BlockTypes.SEGMENT_MATERIAL_DIRECTIONS:
                 return this.PARSE_SEGMENT_MATERIAL_DIRECTIONS_BLOCK(block);
+            case BlockTypes.CARPET_MAP:
+                return block; // parse in post parse
             case BlockTypes.DIGEST:
                 return;
             default:
@@ -647,6 +650,31 @@ class RoborockMapParser {
                     }));
                 });
 
+            }
+            if (blocks[BlockTypes.CARPET_MAP]) {
+                let pixels = [];
+
+                const block = blocks[BlockTypes.CARPET_MAP];
+                const imageBlock = blocks[BlockTypes.IMAGE];
+                const view = block.view;
+                for (let i = 0; i < block.data_length; i++) {
+                    const val = view[block.header_length + i];
+
+                    if (val !== 0) {
+                        const coordsX = (i % imageBlock.dimensions.width) + imageBlock.position.left;
+                        const coordsY = (imageBlock.dimensions.height-1 - ~~(i / imageBlock.dimensions.width)) + imageBlock.position.top;
+                        pixels.push([coordsX, coordsY]);
+                    }
+                }
+
+                if (pixels.length > 0) {
+                    layers.push(
+                        new mapEntities.MapLayer({
+                            pixels: pixels.sort(mapEntities.MapLayer.COORDINATE_TUPLE_SORT).flat(),
+                            type: mapEntities.MapLayer.TYPE.CARPET,
+                        })
+                    );
+                }
             }
 
             return new mapEntities.ValetudoMap({

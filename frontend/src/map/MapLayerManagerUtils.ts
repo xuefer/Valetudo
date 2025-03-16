@@ -29,6 +29,7 @@ function mixPixel(lowerLayer: RGBAColor, upperLayer: RGBAColor) : RGBAColor {
 }
 
 export type LayerColors = {
+    carpet: RGBAColor;
     floor: RGBAColor;
     wall: RGBAColor;
     segments: RGBAColor[];
@@ -287,6 +288,15 @@ export function PROCESS_LAYERS(layers: Array<RawMapLayer>, pixelSize: number, pa
         let accentColor: RGBAColor = {r: 64, g: 192, b: 128, a: 255};
 
         switch (layer.type) {
+            case "carpet":
+                if (hasSelectedSegments) {
+                    color = colors.carpet;
+                    accentColor = accentColors.carpet;
+                } else {
+                    color = backgroundColors.carpet;
+                    accentColor = backgroundAccentColors.carpet;
+                }
+                break;
             case "floor":
                 if (hasSelectedSegments) {
                     color = colors.floor;
@@ -354,7 +364,9 @@ export function PROCESS_LAYERS(layers: Array<RawMapLayer>, pixelSize: number, pa
             pixelData[imgDataOffset + 2] = mixed.b;
             pixelData[imgDataOffset + 3] = mixed.a;
 
-            segmentLookupData[offset] = segmentLookupId;
+            if (segmentLookupId) {
+                segmentLookupData[offset] = segmentLookupId;
+            }
         }
     });
 
@@ -404,12 +416,14 @@ function CALCULATE_REQUIRED_DIMENSIONS(layers: Array<RawMapLayer>) {
 const TYPE_SORT_MAPPING = {
     "floor": 14,
     "segment": 15,
-    "wall": 16
+    "carpet": 16,
+    "wall": 17
 };
 
 const wallColor = hexToRgb("#333333");
 
 export const COLORS: LayerColors = {
+    carpet: hexToRgb("#31313180"),
     floor: hexToRgb(lightPalette.blue),
     wall: wallColor,
     segments: [
@@ -422,24 +436,28 @@ export const COLORS: LayerColors = {
 };
 
 export const ACCENT_COLORS: LayerColors = {
+    carpet: COLORS.carpet,
     floor: adjustRGBColorBrightness(COLORS.floor, -7.5),
     wall: adjustRGBColorBrightness(COLORS.wall, -5),
     segments: COLORS.segments.map(c => adjustRGBColorBrightness(c, -7.5))
 };
 
 export const BACKGROUND_COLORS: LayerColors = {
+    carpet: COLORS.carpet,
     floor: adjustRGBColorBrightness(COLORS.floor, -40),
     wall: adjustRGBColorBrightness(COLORS.wall, -15),
     segments: COLORS.segments.map(c => adjustRGBColorBrightness(c, -40))
 };
 
 export const BACKGROUND_ACCENT_COLORS: LayerColors = {
+    carpet: COLORS.carpet,
     floor: adjustRGBColorBrightness(BACKGROUND_COLORS.floor, -7.5),
     wall: adjustRGBColorBrightness(BACKGROUND_COLORS.wall, -5),
     segments: BACKGROUND_COLORS.segments.map(c => adjustRGBColorBrightness(c, -7.5))
 };
 
 export const DARK_COLORS: LayerColors = {
+    carpet: COLORS.carpet,
     floor: hexToRgb(darkPalette.blue),
     wall: wallColor,
     segments: [
@@ -452,6 +470,7 @@ export const DARK_COLORS: LayerColors = {
 };
 
 export const DARK_ACCENT_COLORS: LayerColors = {
+    carpet: COLORS.carpet,
     floor: adjustRGBColorBrightness(DARK_COLORS.floor, -25),
     wall: adjustRGBColorBrightness(DARK_COLORS.wall, -15),
     segments: COLORS.segments.map(c => adjustRGBColorBrightness(c, -25))
@@ -459,12 +478,14 @@ export const DARK_ACCENT_COLORS: LayerColors = {
 
 
 export const DARK_BACKGROUND_COLORS: LayerColors = {
+    carpet: COLORS.carpet,
     floor: adjustRGBColorBrightness(COLORS.floor, -50),
     wall: adjustRGBColorBrightness(COLORS.wall, -20),
     segments: COLORS.segments.map(c => adjustRGBColorBrightness(c, -50))
 };
 
 export const DARK_BACKGROUND_ACCENT_COLORS: LayerColors = {
+    carpet: COLORS.carpet,
     floor: adjustRGBColorBrightness(DARK_BACKGROUND_COLORS.floor, -10),
     wall: adjustRGBColorBrightness(DARK_BACKGROUND_COLORS.wall, -5),
     segments: DARK_BACKGROUND_COLORS.segments.map(c => adjustRGBColorBrightness(c, -10))

@@ -49,6 +49,7 @@ export interface RawMapLayerMetaData {
 }
 
 export enum RawMapLayerType {
+    Carpet = "carpet",
     Floor = "floor",
     Segment = "segment",
     Wall = "wall",
