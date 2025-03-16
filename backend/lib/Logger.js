@@ -140,10 +140,11 @@ class Logger {
 
                     if (fileSize > this.logFileMaxSize) {
                         this.logFileWriteStream.close();
+                        fs.renameSync(this.logFilePath, this.logFilePath + ".old");
                         fs.writeFileSync(this.logFilePath, "");
                         this.logFileWriteStream = fs.createWriteStream(this.logFilePath, Logger.LogFileOptions);
 
-                        this.warn(`Logfile ${this.logFilePath} was cleared after reaching a size of ${fileSize} bytes.`);
+                        this.warn(`Logfile ${this.logFilePath} was rotated after reaching a size of ${fileSize} bytes.`);
                     }
                 }
             }
