@@ -156,6 +156,10 @@ class RoborockMapParser {
                 return this.PARSE_SEGMENT_MATERIALS_BLOCK(block);
             case BlockTypes.SEGMENT_MATERIAL_DIRECTIONS:
                 return this.PARSE_SEGMENT_MATERIAL_DIRECTIONS_BLOCK(block);
+            case BlockTypes.DIGEST:
+                return;
+            default:
+                Logger.debug(`Unknown map info ${block.type} (${block.data_length} bytes): ${block.view.subarray(block.header_length, block.header_length + 32).toString("hex")}`);
         }
     }
 
