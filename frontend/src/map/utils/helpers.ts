@@ -2,7 +2,7 @@ import {PointCoordinates} from "./types";
 
 
 // noinspection JSDeprecatedSymbols
-const isSufferingFromSafari = (
+export const isSufferingFromSafari = (
     /iPad|iPhone|iPod/.test(window.navigator.userAgent || "") ||
     window.navigator.vendor === "Apple Computer, Inc."
 );
