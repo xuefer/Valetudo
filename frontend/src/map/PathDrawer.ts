@@ -1,3 +1,4 @@
+import {Canvas2DContextTrackingWrapper} from "./utils/Canvas2DContextTrackingWrapper";
 import {RawMapEntity, RawMapEntityType} from "../api";
 import {PaletteMode} from "@mui/material";
 import {simplify} from "./utils/simplify_js";
@@ -118,5 +119,103 @@ export class PathDrawer {
         svgPath += "/>";
 
         return svgPath;
+    }
+
+    static draw(ctxWrapper: Canvas2DContextTrackingWrapper, options: PathDrawerOptions) {
+
+        const {
+            paletteMode,
+            pathMapEntities,
+            pixelSize,
+            width,
+            opacity
+        } = options;
+
+        if (pathMapEntities.length <= 0) {
+            return;
+        }
+        const ctx = ctxWrapper.getContext();
+        ctxWrapper.save();
+
+        let pathColor: string;
+
+        switch (paletteMode) {
+            case "light":
+                pathColor = "#ffffff";
+                break;
+            case "dark":
+                pathColor = "#000000";
+                break;
+        }
+
+        const paths = pathMapEntities.filter(e => e.type === RawMapEntityType.Path).map(e => e.points);
+        if (paths.length > 0) {
+            PathDrawer.drawPathsInCtx(
+                ctx,
+                paths,
+                RawMapEntityType.Path,
+                pixelSize,
+                pathColor,
+                width,
+                opacity
+            );
+        }
+
+        const predictedPaths = pathMapEntities.filter(e => e.type === RawMapEntityType.PredictedPath).map(e => e.points);
+        if (predictedPaths.length > 0) {
+            PathDrawer.drawPathsInCtx(
+                ctx,
+                predictedPaths,
+                RawMapEntityType.PredictedPath,
+                pixelSize,
+                pathColor,
+                width,
+                opacity
+            );
+        }
+
+        ctxWrapper.restore();
+    }
+
+    private static drawPathsInCtx(
+        ctx: CanvasRenderingContext2D,
+        paths: Array<Array<number>>,
+        type: RawMapEntityType,
+        pixelSize: number,
+        color: string,
+        width?: number,
+        opacity?: number,
+    ) {
+        const pathWidth = width ?? 0.5;
+        const pathOpacity = opacity ?? 1;
+
+        ctx.fillStyle = "none";
+        ctx.strokeStyle = color;
+        ctx.lineWidth = pathWidth;
+        ctx.globalAlpha = pathOpacity;
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+        ctx.imageSmoothingEnabled = true;
+        ctx.beginPath();
+
+        if (type === RawMapEntityType.PredictedPath) {
+            ctx.setLineDash([1, 1]);
+        }
+
+        paths.forEach(points => {
+            const simplifiedPoints = simplify(points, 0.8);
+
+            for (let i = 0; i < simplifiedPoints.length; i = i + 2) {
+                const x = simplifiedPoints[i] / pixelSize;
+                const y = simplifiedPoints[i + 1] / pixelSize;
+
+                if (i === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            }
+        });
+        ctx.stroke();
     }
 }
