@@ -164,6 +164,20 @@ class MiioValetudoRobot extends ValetudoRobot {
         this.fdsMockServer.listen(8079, this.dummycloudBindIp, function() {
             Logger.info("FDSMockServer running on port " + 8079);
         });
+
+        const restoreRawFDS = this.config.get("debug").restoreRawFDS;
+        if (restoreRawFDS) {
+            setTimeout(() => {
+                try {
+                    const fdsBuffer = fs.readFileSync(restoreRawFDS);
+                    Logger.info("Loaded raw fds file from ", restoreRawFDS);
+
+                    this.handleUploadedFDSData(fdsBuffer, undefined, undefined);
+                } catch (e) {
+                    Logger.warn("Failed to restore raw fds file.", e);
+                }
+            }, 2500);
+        }
     }
 
     get deviceId() {
