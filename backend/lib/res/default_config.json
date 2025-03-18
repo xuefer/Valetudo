@@ -67,7 +67,8 @@
     "logLevel": "info",
     "debug": {
         "debugHassAnchors": false,
-        "storeRawFDSUploads": false
+        "storeRawFDSUploads": false,
+        "restoreRawFDS": ""
     },
     "networkAdvertisement": {
         "enabled": true
