@@ -17,17 +17,15 @@ class RoborockMapSegmentRenameCapability extends MapSegmentRenameCapability {
             throw new Error("Missing segmentNames in memory");
         }
 
-        const payload = [
-            {miRoomId: name, robotRoomId: parseInt(segment.id)}
-        ];
+        const segmentNames = { ...this.segmentNames };
+        segmentNames[parseInt(segment.id)] = name ;
 
-        Object.keys(this.segmentNames).forEach(k => {
-            if (parseInt(k) !== parseInt(segment.id)) {
-                payload.push({
-                    miRoomId: this.segmentNames[k],
-                    robotRoomId: parseInt(k)
-                });
+        const payload = Object.keys(segmentNames).map(k => {
+            const data = { miRoomId: segmentNames[k], robotRoomId: parseInt(k) };
+            if (this.tagIds[k] !== undefined) {
+                data.robotTagId = this.tagIds[k];
             }
+            return data;
         });
 
         await this.robot.sendCommand("name_segment", payload, {timeout: 2500});
@@ -48,12 +46,15 @@ class RoborockMapSegmentRenameCapability extends MapSegmentRenameCapability {
         // Example response: [ [ 21, 'RoomName' ] ]
         if (Array.isArray(segmentNames)) {
             this.segmentNames = {};
+            this.tagIds = {};
 
             segmentNames.forEach(s => {
                 this.segmentNames[s[0]] = s[1];
+                this.tagIds[s[0]] = s[2];
             });
         } else {
-            this.segmentNames = null;
+            this.segmentNames = undefined;
+            this.tagIds = undefined;
         }
     }
 }
