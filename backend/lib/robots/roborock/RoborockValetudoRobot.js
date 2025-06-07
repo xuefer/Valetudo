@@ -254,6 +254,11 @@ class RoborockValetudoRobot extends MiioValetudoRobot {
         if (this.dockType === RoborockConst.DOCK_TYPE.ULTRA) {
             if (data["state"] !== undefined) {
                 switch (data["state"]) {
+                    case 22:
+                        this.state.upsertFirstMatchingAttribute(new entities.state.attributes.DockStatusStateAttribute({
+                            value: entities.state.attributes.DockStatusStateAttribute.VALUE.EMPTYING
+                        }));
+                        break;
                     case 23:
                     case 25:
                     case 26:
@@ -676,6 +681,9 @@ const STATUS_MAP = {
     18: {
         value: stateAttrs.StatusStateAttribute.VALUE.CLEANING,
         flag: stateAttrs.StatusStateAttribute.FLAG.SEGMENT
+    },
+    22: {
+        value: stateAttrs.StatusStateAttribute.VALUE.DOCKED
     },
     23: {
         value: stateAttrs.StatusStateAttribute.VALUE.DOCKED
