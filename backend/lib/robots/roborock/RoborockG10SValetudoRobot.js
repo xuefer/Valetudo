@@ -130,7 +130,8 @@ const WATER_GRADES = {
     [entities.state.attributes.PresetSelectionStateAttribute.INTENSITY.OFF] : 200,
     [entities.state.attributes.PresetSelectionStateAttribute.INTENSITY.LOW]: 201,
     [entities.state.attributes.PresetSelectionStateAttribute.INTENSITY.MEDIUM]: 202,
-    [entities.state.attributes.PresetSelectionStateAttribute.INTENSITY.HIGH]: 203
+    [entities.state.attributes.PresetSelectionStateAttribute.INTENSITY.HIGH]: 203,
+    [entities.state.attributes.PresetSelectionStateAttribute.INTENSITY.CUSTOM]: 204,
 };
 
 module.exports = RoborockG10SValetudoRobot;

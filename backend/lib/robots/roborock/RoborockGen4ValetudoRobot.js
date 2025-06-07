@@ -208,6 +208,7 @@ const FAN_SPEEDS = {
     [entities.state.attributes.PresetSelectionStateAttribute.INTENSITY.HIGH]: 103,
     [entities.state.attributes.PresetSelectionStateAttribute.INTENSITY.MAX]: 104,
     [entities.state.attributes.PresetSelectionStateAttribute.INTENSITY.TURBO]: 108,
+    [entities.state.attributes.PresetSelectionStateAttribute.INTENSITY.CUSTOM]: 106,
     [entities.state.attributes.PresetSelectionStateAttribute.INTENSITY.OFF] : 105 //also known as mop mode
 };
 
