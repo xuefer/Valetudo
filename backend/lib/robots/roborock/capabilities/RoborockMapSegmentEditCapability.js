@@ -1,4 +1,5 @@
 const MapSegmentEditCapability = require("../../../core/capabilities/MapSegmentEditCapability");
+const MapSegmentRenameCapability = require("../../../core/capabilities/MapSegmentRenameCapability");
 const RoborockMapParser = require("../RoborockMapParser");
 
 /**
@@ -13,6 +14,9 @@ class RoborockMapSegmentEditCapability extends MapSegmentEditCapability {
     async joinSegments(segmentA, segmentB) {
         await this.robot.sendCommand("merge_segment", [parseInt(segmentA.id), parseInt(segmentB.id)], {timeout: 5000});
 
+        if (this.robot.hasCapability(MapSegmentRenameCapability.TYPE)) {
+            await this.robot.capabilities[MapSegmentRenameCapability.TYPE].fetchAndStoreSegmentNames();
+        }
         this.robot.pollMap();
     }
 
@@ -37,6 +41,9 @@ class RoborockMapSegmentEditCapability extends MapSegmentEditCapability {
 
         await this.robot.sendCommand("split_segment", flippedSplitLine, {timeout: 5000});
 
+        if (this.robot.hasCapability(MapSegmentRenameCapability.TYPE)) {
+            await this.robot.capabilities[MapSegmentRenameCapability.TYPE].fetchAndStoreSegmentNames();
+        }
         this.robot.pollMap();
     }
 }
