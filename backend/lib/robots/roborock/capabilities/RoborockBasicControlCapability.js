@@ -15,21 +15,23 @@ class RoborockBasicControlCapability extends BasicControlCapability {
         //This is very ugly and should've been handled by the roborock firmware itself
         if (
             StatusStateAttribute &&
-            StatusStateAttribute.value === stateAttrs.StatusStateAttribute.VALUE.PAUSED &&
-            StatusStateAttribute.flag === stateAttrs.StatusStateAttribute.FLAG.RESUMABLE &&
-            StatusStateAttribute.metaData.zoned === true
+            StatusStateAttribute.flag === stateAttrs.StatusStateAttribute.FLAG.RESUMABLE && (
+                StatusStateAttribute.value === stateAttrs.StatusStateAttribute.VALUE.PAUSED ||
+                StatusStateAttribute.value === stateAttrs.StatusStateAttribute.VALUE.DOCKED
+            )
         ) {
-            await this.robot.sendCommand("resume_zoned_clean", [], {});
-        } else if (
-            StatusStateAttribute &&
-            StatusStateAttribute.value === stateAttrs.StatusStateAttribute.VALUE.PAUSED &&
-            StatusStateAttribute.flag === stateAttrs.StatusStateAttribute.FLAG.RESUMABLE &&
-            StatusStateAttribute.metaData.segment_cleaning === true
-        ) {
-            await this.robot.sendCommand("resume_segment_clean", [], {});
-        } else {
-            await this.robot.sendCommand("app_start", [], {});
+            if (StatusStateAttribute.metaData.zoned === true) {
+                await this.robot.sendCommand("resume_zoned_clean", [], {});
+                return;
+            }
+
+            if (StatusStateAttribute.metaData.segment_cleaning === true) {
+                await this.robot.sendCommand("resume_segment_clean", [], {});
+                return;
+            }
         }
+
+        await this.robot.sendCommand("app_start", [], {});
     }
 
     async stop() {
