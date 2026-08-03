@@ -4,20 +4,38 @@ import {FourColorTheoremSolver} from "./utils/colors/FourColorTheoremSolver";
 import {PaletteMode} from "@mui/material";
 import {darkPalette, lightPalette} from "../colors";
 
-export type RGBColor = {
+export type RGBAColor = {
     r: number;
     g: number;
     b: number;
+    a: number;
+}
+
+function mixPixel(lowerLayer: RGBAColor, upperLayer: RGBAColor) : RGBAColor {
+    if (lowerLayer.r !== undefined || upperLayer.a === 255) {
+        return upperLayer;
+    }
+
+    const upperAlpha = upperLayer.a / 255;
+    const upperFilter = (1 - upperAlpha);
+    const lowerAlpha = upperLayer.a / 255;
+    const lowerPrecent  = lowerAlpha * upperFilter;
+    return {
+        r: Math.floor(lowerLayer.r * lowerPrecent + upperLayer.r * upperAlpha),
+        g: Math.floor(lowerLayer.g * lowerPrecent + upperLayer.g * upperAlpha),
+        b: Math.floor(lowerLayer.b * lowerPrecent + upperLayer.b * upperAlpha),
+        a: Math.max(lowerLayer.a, upperLayer.a),
+    };
 }
 
 export type LayerColors = {
-    floor: RGBColor;
-    wall: RGBColor;
-    segments: RGBColor[];
+    floor: RGBAColor;
+    wall: RGBAColor;
+    segments: RGBAColor[];
 };
 
-function hexToRgb(hex: string) : RGBColor {
-    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex.trim());
+function hexToRgb(hex: string) : RGBAColor {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})?$/i.exec(hex.trim());
 
     if (result === null) {
         throw new Error(`Invalid color ${hex}`);
@@ -26,17 +44,19 @@ function hexToRgb(hex: string) : RGBColor {
     return {
         r: parseInt(result[1], 16),
         g: parseInt(result[2], 16),
-        b: parseInt(result[3], 16)
+        b: parseInt(result[3], 16),
+        a: parseInt(result[4] ?? 'ff', 16)
     } ;
 }
 
-export function adjustRGBColorBrightness(color: RGBColor, percent: number): RGBColor {
+export function adjustRGBColorBrightness(color: RGBAColor, percent: number): RGBAColor {
     const multiplier = (100 + percent) / 100;
 
     return {
         r: Math.round(Math.min(255, Math.max(0, color.r * multiplier))),
         g: Math.round(Math.min(255, Math.max(0, color.g * multiplier))),
-        b: Math.round(Math.min(255, Math.max(0, color.b * multiplier)))
+        b: Math.round(Math.min(255, Math.max(0, color.b * multiplier))),
+        a: color.a
     };
 }
 
@@ -263,8 +283,8 @@ export function PROCESS_LAYERS(layers: Array<RawMapLayer>, pixelSize: number, pa
     [...layers].sort((a,b) => {
         return (TYPE_SORT_MAPPING[a.type] ?? 0) - (TYPE_SORT_MAPPING[b.type] ?? 0);
     }).forEach(layer => {
-        let color: RGBColor = {r: 128, g: 128, b: 128};
-        let accentColor: RGBColor = {r: 64, g: 192, b: 128};
+        let color: RGBAColor = {r: 128, g: 128, b: 128, a: 255};
+        let accentColor: RGBAColor = {r: 64, g: 192, b: 128, a: 255};
 
         switch (layer.type) {
             case "floor":
@@ -322,10 +342,17 @@ export function PROCESS_LAYERS(layers: Array<RawMapLayer>, pixelSize: number, pa
 
             const pixelColor = pixelPatternHandler(pixelX, pixelY) ? accentColor : color;
 
-            pixelData[imgDataOffset] = pixelColor.r;
-            pixelData[imgDataOffset + 1] = pixelColor.g;
-            pixelData[imgDataOffset + 2] = pixelColor.b;
-            pixelData[imgDataOffset + 3] = 255;
+            const currentPixel = {
+                r: pixelData[imgDataOffset],
+                g: pixelData[imgDataOffset + 1],
+                b: pixelData[imgDataOffset + 2],
+                a: pixelData[imgDataOffset + 3]
+            };
+            const mixed = mixPixel(currentPixel, pixelColor);
+            pixelData[imgDataOffset] = mixed.r;
+            pixelData[imgDataOffset + 1] = mixed.g;
+            pixelData[imgDataOffset + 2] = mixed.b;
+            pixelData[imgDataOffset + 3] = mixed.a;
 
             segmentLookupData[offset] = segmentLookupId;
         }

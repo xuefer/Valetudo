@@ -235,13 +235,14 @@ export function adjustHexColorBrightness(hexInput: string, percent: number) : st
     hex = hex.trim().replace("#","");
 
     // convert 3 char codes --> 6, e.g. `E0F` --> `EE00FF`
-    if (hex.length === 3) {
+    if (hex.length === 3 || hex.length === 4) {
         hex = hex.replace(/(.)/g, "$1$1");
     }
 
     let r = parseInt(hex.slice(0, 2), 16);
     let g = parseInt(hex.slice(2, 4), 16);
     let b = parseInt(hex.slice(4, 6), 16);
+    const a = hex.slice(6, 8);
 
     const calculatedPercent = (100 + percent) / 100;
 
@@ -254,6 +255,7 @@ export function adjustHexColorBrightness(hexInput: string, percent: number) : st
     result += r.toString(16).toUpperCase().padStart(2, "0");
     result += g.toString(16).toUpperCase().padStart(2, "0");
     result += b.toString(16).toUpperCase().padStart(2, "0");
+    result += a;
 
     return result;
 }
