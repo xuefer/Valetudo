@@ -80,7 +80,7 @@ const solidFillPixelPatternHandler: PixelPatternHandler = (x, y) => {
  * +-----+-----+
  */
 const tilePixelPatternHandler: PixelPatternHandler = (x, y) => {
-    const TILE_SIZE = 6;
+    const TILE_SIZE = 16;
 
     return x % TILE_SIZE === 0 || y % TILE_SIZE === 0;
 };
