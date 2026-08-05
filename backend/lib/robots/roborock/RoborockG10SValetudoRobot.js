@@ -1,6 +1,7 @@
 const capabilities = require("./capabilities");
 const entities = require("../../entities");
 const fs = require("fs");
+const LinuxDuststreamingCapability = require("../common/linuxCapabilities/LinuxDuststreamingCapability");
 const Logger = require("../../Logger");
 const MiioValetudoRobot = require("../MiioValetudoRobot");
 const QuirksCapability = require("../../core/capabilities/QuirksCapability");
@@ -48,6 +49,16 @@ class RoborockG10SValetudoRobot extends RoborockGen4ValetudoRobot {
         this.registerCapability(new capabilities.RoborockCarpetSensorModeControlCapability({
             robot: this,
             liftModeId: 1
+        }));
+
+        this.registerCapability(new LinuxDuststreamingCapability({
+            robot: this,
+            platform: LinuxDuststreamingCapability.PLATFORM.DREAME_MR813,
+            device: "/dev/video0",
+            dimensions: {
+                width: 640,
+                height: 480
+            }
         }));
 
         [
