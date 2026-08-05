@@ -31,7 +31,7 @@ const BlockTypes = {
     "DOOR_SILL_NO_GO_AREAS": 28, // ??
     "STUCK_POINTS": 29, // Seems to mark a spot where the robot gets stuck repeatedly as a hint to the user to create a no-go area
     "CLIFF_NO_GO_AREAS": 30, // Auto detected cliff areas
-    "SMART_DOOR_SILL_NO_GO_AREAS": 31, // ????
+    "SMART_DOOR_SILLS": 31, // Auto detected door sills
     "SEGMENT_MATERIAL_DIRECTIONS": 32,
     "DIGEST": 1024
 };
@@ -148,6 +148,7 @@ class RoborockMapParser {
             case BlockTypes.NO_GO_AREAS:
             case BlockTypes.NO_MOP_AREAS:
             case BlockTypes.CLIFF_NO_GO_AREAS:
+            case BlockTypes.SMART_DOOR_SILLS:
                 return this.PARSE_STRUCTURES_BLOCK(block, true);
             case BlockTypes.CURRENTLY_CLEANED_SEGMENTS:
                 return this.PARSE_SEGMENTS_BLOCK(block);
@@ -626,6 +627,15 @@ class RoborockMapParser {
                     entities.push(new mapEntities.PolygonMapEntity({
                         points: TransformRoborockCoordinateArraysToValetudoCoordinateArrays(area),
                         type: mapEntities.PolygonMapEntity.TYPE.CLIFF_NO_GO_AREA
+                    }));
+                });
+            }
+
+            if (blocks[BlockTypes.SMART_DOOR_SILLS]) {
+                blocks[BlockTypes.SMART_DOOR_SILLS].forEach(area => {
+                    entities.push(new mapEntities.PolygonMapEntity({
+                        points: TransformRoborockCoordinateArraysToValetudoCoordinateArrays(area),
+                        type: mapEntities.PolygonMapEntity.TYPE.SMART_DOOR_SILL
                     }));
                 });
             }

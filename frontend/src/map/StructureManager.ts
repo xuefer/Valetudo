@@ -8,6 +8,7 @@ import ClientStructure from "./structures/client_structures/ClientStructure";
 import NoGoAreaMapStructure from "./structures/map_structures/NoGoAreaMapStructure";
 import NoMopAreaMapStructure from "./structures/map_structures/NoMopAreaMapStructure";
 import CliffNoGoAreaMapStructure from "./structures/map_structures/CliffNoGoAreaMapStructure";
+import SmartDoorSillMapStructure from "./structures/map_structures/SmartDoorSillMapStructure";
 import VirtualWallMapStructure from "./structures/map_structures/VirtualWallMapStructure";
 import GoToTargetMapStructure from "./structures/map_structures/GoToTargetMapStructure";
 import {median} from "../utils";
@@ -148,6 +149,20 @@ class StructureManager {
                     const p3 = this.convertCMCoordinatesToPixelSpace({x: e.points[6], y: e.points[7]});
 
                     mapStructures.push(new CliffNoGoAreaMapStructure(
+                        p0.x, p0.y,
+                        p1.x, p1.y,
+                        p2.x, p2.y,
+                        p3.x, p3.y,
+                    ));
+                    break;
+                }
+                case RawMapEntityType.SmartDoorSill: {
+                    const p0 = this.convertCMCoordinatesToPixelSpace({x: e.points[0], y: e.points[1]});
+                    const p1 = this.convertCMCoordinatesToPixelSpace({x: e.points[2], y: e.points[3]});
+                    const p2 = this.convertCMCoordinatesToPixelSpace({x: e.points[4], y: e.points[5]});
+                    const p3 = this.convertCMCoordinatesToPixelSpace({x: e.points[6], y: e.points[7]});
+
+                    mapStructures.push(new SmartDoorSillMapStructure(
                         p0.x, p0.y,
                         p1.x, p1.y,
                         p2.x, p2.y,
@@ -338,6 +353,7 @@ const TYPE_SORT_MAPPING: Record<MapStructureType, number> = {
     [NoGoAreaMapStructure.TYPE]: 5,
     [NoMopAreaMapStructure.TYPE]: 5,
     [CliffNoGoAreaMapStructure.TYPE]: 5,
+    [SmartDoorSillMapStructure.TYPE]: 5,
     [VirtualWallMapStructure.TYPE]: 5,
 
     [ThresholdMapStructure.TYPE]: 6,
