@@ -296,7 +296,7 @@ const Dock = (): React.ReactElement => {
                         mopDockCleanTriggerSupported &&
                         <Grid2 sx={{flex: 1, minWidth: "min-content"}}>
                             <Button
-                                disabled={feedbackPending || commandIsExecuting || !["idle", "cleaning", "pause"].includes(dockState) || robotState !== "docked" || !mopAttachmentAttached}
+                                disabled={feedbackPending || commandIsExecuting || !["idle", "cleaning", "pause"].includes(dockState) || !mopAttachmentAttached}
                                 variant="outlined"
                                 size="medium"
                                 color="inherit"
@@ -336,7 +336,7 @@ const Dock = (): React.ReactElement => {
                         triggerEmptySupported &&
                         <Grid2 sx={{flex: 1, minWidth: "min-content"}}>
                             <Button
-                                disabled={commandIsExecuting || !["idle", "pause"].includes(dockState) || robotState !== "docked"}
+                                disabled={commandIsExecuting || !["idle", "pause"].includes(dockState)}
                                 variant="outlined"
                                 size="medium"
                                 color="inherit"
