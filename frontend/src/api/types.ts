@@ -675,19 +675,6 @@ export interface MapAnnotationsProperties {
     supportedAnnotationTypes: Array<ValetudoMapAnnotationType>
 }
 
-
-export type CleanRoute = "quick" | "normal" | "intensive" | "deep" | "customize";
-
-export interface CleanRoutePayload {
-    route: CleanRoute
-}
-
-export interface CleanRouteControlProperties {
-    supportedRoutes: Array<CleanRoute>,
-    mopOnly: Array<CleanRoute>,
-    oneTime: Array<CleanRoute>,
-}
-
 export type MopDockMopDryingDuration = "2h" | "3h" | "4h" | "cold";
 
 export interface MopDockMopDryingTimePayload {

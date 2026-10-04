@@ -55,7 +55,6 @@ class RoborockS7ProUltraValetudoRobot extends RoborockGen4ValetudoRobot {
             capabilities.RoborockMopDockCleanManualTriggerCapability,
             capabilities.RoborockKeyLockCapability,
             capabilities.RoborockMappingPassCapability,
-            capabilities.RoborockCleanRouteControlCapability,
             capabilities.RoborockAutoEmptyDockAutoEmptyDurationControlCapability,
         ].forEach(capability => {
             this.registerCapability(new capability({robot: this}));

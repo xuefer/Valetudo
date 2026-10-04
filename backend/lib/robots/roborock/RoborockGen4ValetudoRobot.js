@@ -95,7 +95,7 @@ class RoborockGen4ValetudoRobot extends RoborockValetudoRobot {
      * @param {import("../../ValetudoEventStore")} options.valetudoEventStore
      */
     constructor(options) {
-        super(Object.assign({}, options, {fanSpeeds: FAN_SPEEDS}));
+        super(Object.assign({}, options, {fanSpeeds: FAN_SPEEDS, cleanRoutes: CLEAN_ROUTES}));
 
         [
             capabilities.RoborockCarpetModeControlCapability,
@@ -110,6 +110,13 @@ class RoborockGen4ValetudoRobot extends RoborockValetudoRobot {
         ].forEach(capability => {
             this.registerCapability(new capability({robot: this}));
         });
+
+        this.registerCapability(new capabilities.RoborockCleanRouteControlCapability({
+            robot: this,
+            presets: Object.keys(this.cleanRoutes).map(k => {
+                return new entities.core.ValetudoSelectionPreset({name: k, value: this.cleanRoutes[k]});
+            })
+        }));
     }
 
     onIncomingCloudMessage(msg) {
@@ -211,5 +218,13 @@ const FAN_SPEEDS = {
     [entities.state.attributes.PresetSelectionStateAttribute.INTENSITY.CUSTOM]: 106,
     [entities.state.attributes.PresetSelectionStateAttribute.INTENSITY.OFF] : 105 //also known as mop mode
 };
+
+const CLEAN_ROUTES = Object.freeze({
+    [entities.state.attributes.PresetSelectionStateAttribute.ROUTE.QUICK]:     304,
+    [entities.state.attributes.PresetSelectionStateAttribute.ROUTE.NORMAL]:    300,
+    [entities.state.attributes.PresetSelectionStateAttribute.ROUTE.INTENSIVE]: 301,
+    [entities.state.attributes.PresetSelectionStateAttribute.ROUTE.DEEP]:      303,
+    [entities.state.attributes.PresetSelectionStateAttribute.ROUTE.CUSTOM]:    302,
+});
 
 module.exports = RoborockGen4ValetudoRobot;

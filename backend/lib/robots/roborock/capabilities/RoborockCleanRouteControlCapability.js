@@ -4,50 +4,31 @@ const CleanRouteControlCapability = require("../../../core/capabilities/CleanRou
  * @extends CleanRouteControlCapability<import("../RoborockValetudoRobot")>
  */
 class RoborockCleanRouteControlCapability extends CleanRouteControlCapability {
+    /**
+     * @param {string} preset
+     * @returns {Promise<void>}
+     */
+    async selectPreset(preset) {
+        const matchedPreset = this.presets.find(p => {
+            return p.name === preset;
+        });
 
-    async getRoute() {
-        const res = await this.robot.sendCommand("get_mop_mode", [], {});
-
-        return RoborockCleanRouteControlCapability.INT_TO_MODE[res?.[0]] ?? RoborockCleanRouteControlCapability.ROUTE.NORMAL;
-    }
-
-    async setRoute(newRoute) {
-        await this.robot.sendCommand(
-            "set_mop_mode",
-            [
-                RoborockCleanRouteControlCapability.MODE_TO_INT[newRoute]
-            ],
-            {}
-        );
+        if (matchedPreset) {
+            await this.robot.sendCommand("set_mop_mode", [matchedPreset.value], {});
+        } else {
+            throw new Error("Invalid Preset");
+        }
     }
 
     getProperties() {
         return {
-            supportedRoutes: [
-                RoborockCleanRouteControlCapability.ROUTE.QUICK,
-                RoborockCleanRouteControlCapability.ROUTE.NORMAL,
+            mopOnly: [
                 RoborockCleanRouteControlCapability.ROUTE.INTENSIVE,
                 RoborockCleanRouteControlCapability.ROUTE.DEEP,
-                RoborockCleanRouteControlCapability.ROUTE.CUSTOMIZE,
-            ],
-            mopOnly: [
-                RoborockCleanRouteControlCapability.ROUTE.DEEP
             ],
             oneTime: []
         };
     }
 }
-
-RoborockCleanRouteControlCapability.INT_TO_MODE = Object.freeze({
-    304: RoborockCleanRouteControlCapability.ROUTE.QUICK,
-    300: RoborockCleanRouteControlCapability.ROUTE.NORMAL,
-    301: RoborockCleanRouteControlCapability.ROUTE.INTENSIVE,
-    303: RoborockCleanRouteControlCapability.ROUTE.DEEP,
-    302: RoborockCleanRouteControlCapability.ROUTE.CUSTOMIZE,
-});
-
-RoborockCleanRouteControlCapability.MODE_TO_INT = Object.freeze(Object.fromEntries(
-    Object.entries(RoborockCleanRouteControlCapability.INT_TO_MODE).map(([key, value]) => [value, parseInt(key, 10)])
-));
 
 module.exports = RoborockCleanRouteControlCapability;

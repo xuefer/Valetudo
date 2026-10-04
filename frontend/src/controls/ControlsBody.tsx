@@ -1,6 +1,7 @@
 import {Grid2} from "@mui/material";
 import {
     AppRegistration as OperationModeIcon,
+    Route as CleanRouteControlIcon,
 } from "@mui/icons-material";
 import {Capability, useRobotInformationQuery} from "../api";
 import {useCapabilitiesSupported} from "../CapabilitiesProvider";
@@ -20,6 +21,7 @@ const ControlsBody = (): React.ReactElement => {
         basicControls,
         fanSpeed,
         waterControl,
+        cleanRouteControl,
         operationMode,
         triggerEmptySupported,
         mopDockCleanTriggerSupported,
@@ -30,6 +32,7 @@ const ControlsBody = (): React.ReactElement => {
         Capability.BasicControl,
         Capability.FanSpeedControl,
         Capability.WaterUsageControl,
+        Capability.CleanRouteControl,
         Capability.OperationModeControl,
         Capability.AutoEmptyDockManualTrigger,
         Capability.MopDockCleanManualTrigger,
@@ -77,6 +80,18 @@ const ControlsBody = (): React.ReactElement => {
                     capability={Capability.WaterUsageControl}
                     label="Water"
                     icon={<WaterGradeLowIcon fontSize="small" />}
+                />
+            )}
+
+            {cleanRouteControl && (
+                <PresetSelectionControl
+                    capability={Capability.CleanRouteControl}
+                    label="Route"
+                    icon={
+                        <CleanRouteControlIcon
+                            fontSize="small"
+                        />
+                    }
                 />
             )}
 

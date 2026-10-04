@@ -17,10 +17,14 @@ import {
     WaterGradeMaxIcon,
     WaterGradeMediumIcon,
     WaterGradeMinIcon,
-    WaterGradeOffIcon
+    WaterGradeOffIcon,
+    CleanRouteQuickIcon,
+    CleanRouteNormalIcon,
+    CleanRouteIntensiveIcon,
+    CleanRouteDeepIcon,
 } from "./components/CustomIcons";
 
-const order: Array<PresetValue> = ["off", "min", "low", "medium", "high", "max", "turbo", "vacuum", "vacuum_and_mop", "vacuum_then_mop", "mop"];
+const order: Array<PresetValue> = ["off", "min", "low", "medium", "high", "max", "turbo", "vacuum", "vacuum_and_mop", "vacuum_then_mop", "mop", "quick", "normal", "intensive", "deep", "custom"];
 export const sortPresets = (presets: PresetSelectionState["value"][]) => {
     return [...presets].sort((a, b) => {
         return order.indexOf(a) - order.indexOf(b);
@@ -34,6 +38,11 @@ export const presetFriendlyNames: {[key in PresetValue]: string} = Object.freeze
     "high": "High",
     "max": "Max",
     "turbo": "Turbo",
+
+    "quick": "Quick",
+    "normal": "Normal",
+    "intensive": "Intensive",
+    "deep": "Deep",
 
     "custom": "Custom",
 
@@ -79,6 +88,19 @@ export function getPresetIconOrLabel(capability: Capability, preset: PresetValue
                     return <WaterGradeHighIcon style={style}/>;
                 case "max":
                     return <WaterGradeMaxIcon style={style}/>;
+                default:
+                    return presetFriendlyNames[preset];
+            }
+        case Capability.CleanRouteControl:
+            switch (preset) {
+                case "quick":
+                    return <CleanRouteQuickIcon style={style}/>;
+                case "normal":
+                    return <CleanRouteNormalIcon style={style}/>;
+                case "intensive":
+                    return <CleanRouteIntensiveIcon style={style}/>;
+                case "deep":
+                    return <CleanRouteDeepIcon style={style}/>;
                 default:
                     return presetFriendlyNames[preset];
             }

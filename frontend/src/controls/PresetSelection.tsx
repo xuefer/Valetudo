@@ -53,7 +53,7 @@ const DiscreteSlider = styled(Slider)(({ theme }) => {
 });
 
 export interface PresetSelectionProps {
-    capability: Capability.FanSpeedControl | Capability.WaterUsageControl | Capability.OperationModeControl;
+    capability: Capability.FanSpeedControl | Capability.WaterUsageControl | Capability.CleanRouteControl | Capability.OperationModeControl;
     label: string;
     icon: React.ReactElement;
 }
@@ -148,7 +148,7 @@ const PresetSelectionControl = (props: PresetSelectionProps): React.ReactElement
                     min={0}
                     max={marks.length - 1}
                     marks={marks}
-                    track={capability !== Capability.OperationModeControl ? "normal" : false}
+                    track={capability !== Capability.OperationModeControl && capability !== Capability.CleanRouteControl ? "normal" : false}
                 />
             </Box>
         );

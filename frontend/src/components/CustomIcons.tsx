@@ -171,6 +171,38 @@ export const WaterGradeMaxIcon = createSvgIcon(
     "waterGradeMax"
 );
 
+export const CleanRouteQuickIcon = createSvgIcon(
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="3" width="18" height="18" rx="2" />
+        <path d="M 6.5 17.5 C 6.5 11, 17.5 13, 17.5 6.5" />
+    </svg>,
+    "CleanRouteQuick"
+);
+
+export const CleanRouteNormalIcon = createSvgIcon(
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="3" width="18" height="18" rx="2" />
+        <path d="M 6.8 6.5 V 14.9 A 2.6 2.6 0 0 0 12.0 14.9 V 9.1 A 2.6 2.6 0 0 1 17.2 9.1 V 17.5" />
+    </svg>,
+    "CleanRouteNormal"
+);
+
+export const CleanRouteIntensiveIcon = createSvgIcon(
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="3" width="18" height="18" rx="2" />
+        <path d="M 6.6 17.5 V 8.8 A 1.8 1.8 0 0 1 10.2 8.8 V 15.2 A 1.8 1.8 0 0 0 13.8 15.2 V 8.8 A 1.8 1.8 0 0 1 17.4 8.8 V 17.5" />
+    </svg>,
+    "CleanRouteIntensive"
+);
+
+export const CleanRouteDeepIcon = createSvgIcon(
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="3" width="18" height="18" rx="2" />
+        <path d="M 6.4 17.5 V 8.4 A 1.4 1.4 0 0 1 9.2 8.4 V 15.6 A 1.4 1.4 0 0 0 12.0 15.6 V 8.4 A 1.4 1.4 0 0 1 14.8 8.4 V 15.6 A 1.4 1.4 0 0 0 17.6 15.6 V 6.5" />
+    </svg>,
+    "CleanRouteDeep"
+);
+
 export const OperationModeVacuum = createSvgIcon(
     <path
         d="m13.178 0.0019531a1.2692 1.2692 0 0 0-0.62695 0.19922c-2.9984 1.9312-5.0848 4.1913-6.0918 6.8125a1.2692 1.2692 0 0 0 0.73047 1.6406 1.2692 1.2692 0 0 0 1.6387-0.73047c0.761-1.9808 2.4052-3.8537 5.0977-5.5879a1.2692 1.2692 0 0 0 0.37891-1.7539 1.2692 1.2692 0 0 0-1.127-0.58008zm-11.9 6.0898a1.2692 1.2692 0 0 0-0.33008 0.041016 1.2692 1.2692 0 0 0-0.9043 1.5508c0.9101 3.4485 2.4159 6.1307 4.5977 7.8984a1.2692 1.2692 0 0 0 1.7852-0.1875 1.2692 1.2692 0 0 0-0.1875-1.7852c-1.6487-1.3358-2.923-3.4777-3.7402-6.5742a1.2692 1.2692 0 0 0-1.2207-0.94336zm13.893 0.0039062a1.2692 1.2692 0 0 0-1.334 1.2012 1.2692 1.2692 0 0 0 1.2012 1.334c2.119 0.1116 4.4075 1.0963 6.8887 3.1211a1.2692 1.2692 0 0 0 1.7871-0.18164 1.2692 1.2692 0 0 0-0.18164-1.7852c-2.7634-2.2549-5.5571-3.5417-8.3613-3.6895zm2.3379 7.0605a1.2692 1.2692 0 0 0-0.32812 0.042969 1.2692 1.2692 0 0 0-0.89648 1.5547c0.5487 2.0497 0.31906 4.532-0.83984 7.5176a1.2692 1.2692 0 0 0 0.72461 1.6426 1.2692 1.2692 0 0 0 1.6426-0.72461c1.2907-3.3249 1.6499-6.3793 0.92383-9.0918a1.2692 1.2692 0 0 0-1.2266-0.94141zm-6.0371 4.4727a1.2692 1.2692 0 0 0-0.625 0.20117c-1.7799 1.1552-4.2105 1.705-7.4082 1.5254a1.2692 1.2692 0 0 0-1.3398 1.1973 1.2692 1.2692 0 0 0 1.1973 1.3379c3.561 0.20008 6.5762-0.40098 8.9316-1.9297a1.2692 1.2692 0 0 0 0.37305-1.7559 1.2692 1.2692 0 0 0-1.1289-0.57617z"/>,

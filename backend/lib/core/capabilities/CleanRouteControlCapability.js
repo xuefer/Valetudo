@@ -1,34 +1,17 @@
-const Capability = require("./Capability");
 const NotImplementedError = require("../NotImplementedError");
+const PresetSelectionCapability = require("./PresetSelectionCapability");
 
 /**
  * @template {import("../ValetudoRobot")} T
- * @extends Capability<T>
+ * @extends PresetSelectionCapability<T>
  */
-class CleanRouteControlCapability extends Capability {
+class CleanRouteControlCapability extends PresetSelectionCapability {
     /**
-     *
-     * @param {object} options
-     * @param {T} options.robot
-     * @class
-     */
-    constructor(options) {
-        super(options);
-    }
-
-    /**
-     * @returns {Promise<CleanRouteControlCapabilityRoute>}
-     */
-    async getRoute() {
-        throw new NotImplementedError();
-    }
-
-    /**
-     *
-     * @param {CleanRouteControlCapabilityRoute} newRoute
+     * @abstract
+     * @param {string} preset
      * @returns {Promise<void>}
      */
-    async setRoute(newRoute) {
+    async selectPreset(preset) {
         throw new NotImplementedError();
     }
 
@@ -43,6 +26,9 @@ class CleanRouteControlCapability extends Capability {
         };
     }
 
+    /**
+     * @returns {string}
+     */
     getType() {
         return CleanRouteControlCapability.TYPE;
     }
@@ -50,19 +36,4 @@ class CleanRouteControlCapability extends Capability {
 
 CleanRouteControlCapability.TYPE = "CleanRouteControlCapability";
 
-/**
- *  @typedef {string} CleanRouteControlCapabilityRoute
- *  @enum {string}
- *
- */
-CleanRouteControlCapability.ROUTE = Object.freeze({
-    NORMAL: "normal",
-    QUICK: "quick",
-    INTENSIVE: "intensive",
-    DEEP: "deep",
-    CUSTOMIZE: "customize",
-});
-
-
 module.exports = CleanRouteControlCapability;
-

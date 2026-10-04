@@ -34,6 +34,7 @@ class RoborockValetudoRobot extends MiioValetudoRobot {
         this.mapPollMiioCommand = MAP_POLL_COMMANDS.GetFreshMap;
         this.fanSpeeds = options.fanSpeeds;
         this.waterGrades = options.waterGrades ?? {};
+        this.cleanRoutes = options.cleanRoutes ?? {};
         this.dockType = options.dockType ?? RoborockConst.DOCK_TYPE.CHARGING;
 
         this.registerCapability(new capabilities.RoborockFanSpeedControlCapability({
@@ -425,6 +426,21 @@ class RoborockValetudoRobot extends MiioValetudoRobot {
                 type: stateAttrs.PresetSelectionStateAttribute.TYPE.WATER_GRADE,
                 value: matchingWaterGrade,
                 customValue: matchingWaterGrade === stateAttrs.PresetSelectionStateAttribute.INTENSITY.CUSTOM ? data["water_box_mode"] : undefined
+            }));
+        }
+
+        if (data["mop_mode"] !== undefined) {
+            let matchingCleanRoute = Object.keys(this.cleanRoutes).find(key => {
+                return this.cleanRoutes[key] === data["mop_mode"];
+            });
+            if (!matchingCleanRoute) {
+                matchingCleanRoute = stateAttrs.PresetSelectionStateAttribute.ROUTE.CUSTOM;
+            }
+
+            this.state.upsertFirstMatchingAttribute(new stateAttrs.PresetSelectionStateAttribute({
+                type: stateAttrs.PresetSelectionStateAttribute.TYPE.CLEAN_ROUTE,
+                value: matchingCleanRoute,
+                customValue: matchingCleanRoute === stateAttrs.PresetSelectionStateAttribute.ROUTE.CUSTOM ? data["mop_mode"] : undefined
             }));
         }
 

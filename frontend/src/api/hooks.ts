@@ -144,9 +144,6 @@ import {
     sendSetSegmentMaterialCommand,
     fetchFloorMaterialDirectionAwareNavigationControlState,
     sendFloorMaterialDirectionAwareNavigationControlState,
-    fetchCleanRoute,
-    sendCleanRoute,
-    fetchCleanRouteControlProperties,
     fetchMopDockMopDryingTime,
     sendMopDockMopDryingTime,
     fetchMopDockMopDryingTimeControlProperties,
@@ -169,7 +166,6 @@ import {
     Capability,
     DuststreamingConfiguration,
     CarpetSensorMode,
-    CleanRoute,
     CombinedVirtualRestrictionsUpdateRequestParameters,
     ConsumableId,
     DoNotDisturbConfiguration,
@@ -273,8 +269,6 @@ enum QueryKey {
     MopDockMopAutoDryingControl = "mop_dock_mop_auto_drying_control",
     MapSegmentMaterialControlProperties = "map_segment_material_control_properties",
     FloorMaterialDirectionAwareNavigationControl = "floor_material_direction_aware_navigation_control",
-    CleanRouteControl = "clean_route_control",
-    CleanRouteControlProperties = "clean_route_control_properties",
     MopDockMopDryingTimeControl = "mop_dock_mop_drying_time_control",
     MopDockMopDryingTimeControlProperties = "mop_dock_mop_drying_time_control_properties",
     AutoEmptyDockAutoEmptyDurationControl = "auto_empty_dock_auto_empty_duration_control",
@@ -429,7 +423,7 @@ export function useRobotStatusQuery(select?: (status: StatusState) => any) {
 }
 
 export const usePresetSelectionsQuery = (
-    capability: Capability.FanSpeedControl | Capability.WaterUsageControl | Capability.OperationModeControl
+    capability: Capability.FanSpeedControl | Capability.WaterUsageControl | Capability.CleanRouteControl | Capability.OperationModeControl
 ) => {
     return useQuery({
         queryKey: [QueryKey.PresetSelections, capability],
@@ -445,10 +439,11 @@ export const capabilityToPresetType: Record<Parameters<typeof usePresetSelection
     PresetSelectionState["type"]> = {
         [Capability.FanSpeedControl]: "fan_speed",
         [Capability.WaterUsageControl]: "water_grade",
+        [Capability.CleanRouteControl]: "clean_route",
         [Capability.OperationModeControl]: "operation_mode",
     };
 export const usePresetSelectionMutation = (
-    capability: Capability.FanSpeedControl | Capability.WaterUsageControl | Capability.OperationModeControl
+    capability: Capability.FanSpeedControl | Capability.WaterUsageControl | Capability.CleanRouteControl | Capability.OperationModeControl
 ) => {
     const queryClient = useQueryClient();
 
@@ -1812,32 +1807,6 @@ export const useFloorMaterialDirectionAwareNavigationControlMutation = () => {
             return sendFloorMaterialDirectionAwareNavigationControlState(enable).then(fetchFloorMaterialDirectionAwareNavigationControlState);
         },
         onError: useOnCommandError(Capability.FloorMaterialDirectionAwareNavigationControl)
-    });
-};
-
-export const useCleanRouteQuery = () => {
-    return useQuery({
-        queryKey: [QueryKey.CleanRouteControl],
-        queryFn: fetchCleanRoute
-    });
-};
-
-export const useCleanRouteMutation = () => {
-    return useValetudoFetchingMutation({
-        queryKey: [QueryKey.CleanRouteControl],
-        mutationFn: (route: CleanRoute) => {
-            return sendCleanRoute({route: route}).then(fetchCleanRoute);
-        },
-        onError: useOnCommandError(Capability.CleanRouteControl)
-    });
-};
-
-export const useCleanRouteControlPropertiesQuery = () => {
-    return useQuery({
-        queryKey: [QueryKey.CleanRouteControlProperties],
-        queryFn: fetchCleanRouteControlProperties,
-
-        staleTime: Infinity
     });
 };
 
